@@ -30,9 +30,7 @@
 #include "auton/auton.h"
 
 void pre_auton() {
-	clawState(1);
-
-	//calibrate();
+	calibrate();
 }
 
 task autonomous() {
@@ -43,11 +41,12 @@ task lift() {
 	// 0 for when off
 	// 0.01 for claw open
 	// 0.015 for claw closed
-	float proportional = 0.01;
 
+	int stall = 0;
+
+	float proportional = 0.01;
 	float weightDef = 0.01;
 	float weightSet = 0.01;
-	int stall = 0;
 
 	while (true) {
 		if (vexRT[Btn6U]) {
@@ -66,28 +65,6 @@ task lift() {
 			moveLift(0);
 		}
 
-		Toggle stall0; stall0.state = stall0.buffer = 0;
-		Toggle stall001; stall001.state = stall001.buffer = 0;
-		Toggle stall0015; stall0015.state = stall0015.buffer = 0;
-
-		if (vexRT[Btn5D] && (vexRT[Btn5D] != stall0.buffer)) {// if button is pressed and it was not pressed before
-	   	stall0.state = stall0.state ? 0 : 1;
-	   	stall001.state = 0;
-	   	stall0015.state = 0;
-	  }
-
-	  if (vexRT[Btn5D] && (vexRT[Btn5D] != stall001.buffer)) {  // if button is pressed and it was not pressed before
-	   	stall001.state = stall001.state ? 0 : 1;
-	   	stall0.state = 0;
-	   	stall0015.state = 0;
-	  }
-
-	  if (vexRT[Btn5D] && (vexRT[Btn5D] != stall0015.buffer)) {  // if button is pressed and it was not pressed before
-	   	stall0015.state = stall0015.state ? 0 : 1;
-	   	stall0.state = 0;
-	   	stall001.state = 0;
-	  }
-
 		wait1Msec(20);
 	}
 }
@@ -97,24 +74,11 @@ task usercontrol() {
 	claw.state = 0;
 	claw.buffer = 0;
 
-	//set stall torques
-
+	startTask(lift);
 
 	while (true) {
 		// arcade drive
 		moveDrive(vexRT[Ch3] + vexRT[Ch1], vexRT[Ch3] - vexRT[Ch1]);
-
-		// lift
-
-
-		//set kP
-		//if (claw.state == 0) {
-		//	proportional = weightDef;
-		//}
-		//else {
-		//	proportional = weightSet;
-		//}
-
 
 		// claw
 		if (vexRT[Btn5D] && (vexRT[Btn5D] != claw.buffer))  // if button is pressed and it was not pressed before
@@ -130,54 +94,11 @@ task usercontrol() {
 		if (vexRT[Btn8D])
 			transmissionState(CLOSED);
 
-		//set kP
-		//if (vexRT[Btn5U]){
-		//	weightSet = 0.01;
-		//	weightDef = 0.01;
-		//}
-
-		//if (vexRT[Btn7D]){
-		//	weightSet = 0.015;
-		//	weightDef = 0.01;
-		//}
-
-		/*
-
-
-		}
-
-		if (vexRT[Btn7L]){
-			weightSet = 0;
-			weightDef = 0;
-		}
-		*/
-
 		if (vexRT[Btn8R])
 			autonLiftUp(2900);
 
 		if (vexRT[Btn8L])
 			autonLiftUp(2000);
-
-		/*
-		// test code
-		if (vexRT[Btn8R])
-			autonLiftUp(2900);
-
-		if (vexRT[Btn8L])
-			unhang();
-
-		int degree = 45;
-		if (vexRT[Btn7R])
-			rotate(degree, CLOCKWISE);
-
-		if (vexRT[Btn7L])
-			rotate(degree, COUNTERCLOCKWISE);
-
-		if (vexRT[Btn7U]) {
-			deploy();
-			wait1Msec(2000);
-		}
-		*/
 
 		wait1Msec(20);
 	}
