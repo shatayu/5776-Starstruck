@@ -1,13 +1,65 @@
 // use claw to knock stars off fence
-void support (int direction) {
+PID holdPID;
+task autonHold() {
+	// 0 for when off
+	// 0.01 for claw open
+	// 0.015 for claw closed
+	holdPID.kp = 0.4;
+	holdPID.ki = 0.1;
+	holdPID.dead = 10;
+	holdPID.iCap = 10;
+	holdPID.tCap = 15;
 
-	//deploy();
+	holdPID.set = SensorValue[LiftPot];
+
+	while (true) {
+		if(SensorValue[LiftPot] > 900){
+			holdPID.cur = SensorValue[LiftPot];
+			calcPID(holdPID);
+		}else{
+			holdPID.power = 0;
+			holdPID.integral = 0;
+		}
+		moveLift(holdPID.power);
+		wait1Msec(20);
+	}
+}
+
+void supportBlue (int direction) {
+	deploy();
 
 	clawState(OPEN);
-	move(1800, FORWARD); // check constant
+	move(1310, FORWARD);
+	wait1Msec(150);
 	clawState(CLOSED);
-	move(1800, BACKWARD);
+	wait1Msec(150);
+	autonLiftUp(1800);
+	startTask(autonHold);
+	move(1650, BACKWARD);
+	rotate(90, COUNTERCLOCKWISE * direction);
+	move(1900, BACKWARD); // test distance
+	stopTask(autonHold);
+
+	moveLift(127);
+	while (SensorValue[LiftPot] < 2300) {
+		wait1Msec(20);
+	}
+	clawState(OPEN);
+	while (SensorValue[LiftPot] < 2600) {
+		wait1Msec(20);
+	}
+
+	moveLift(0);
+	startTask(autonHold);
+	move(800, FORWARD);
+	stopTask(autonHold);
+
+	//rotate(135, CLOCKWISE * direction);
+	//move(700, BACKWARD);
+	//hang();
 }
+
+
 
 // pick up cube and knock it over central fence, knocking stars with it
 void cubeScore (int direction) {

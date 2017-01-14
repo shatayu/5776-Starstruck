@@ -68,23 +68,6 @@ void rotate (float degrees, int direction) {
 	zeroEncoders();
 }
 
-void hang () {
-	//liftHang();
-	moveDrive(127, 127);
-	wait1Msec(250);
-	moveLift(-127);
-	wait1Msec(250);
-	transmissionState(1);
-	wait1Msec(1800); // duration of hang
-
-	moveLift(0);
-
-	moveDrive(15, 15); // stall torque
-	wait1Msec(700);
-
-	moveDrive(0, 0);
-}
-
 PID liftPID;
 void autonLift(int angle) {
 	liftPID.set = angle;
@@ -155,9 +138,43 @@ void autonLiftDown (int angle) {
 }
 
 void deploy() {
-	autonLiftUp(2000);
+	autonLiftUp(1300);
 	clawState(OPEN);
 	autonLiftDown(750);
-	wait1Msec(500);
-	clawState(CLOSED);
+}
+
+
+void hang () {
+	/*
+	-align
+	-lift up
+	-stop lifting
+	-drive forward
+	-lift down (while driving forward)
+	-engage transmission
+	-keep lifting down and driving forward until desired height is reached
+	*/
+	clearTimer(T1);
+	while (time1[T1] < 5000) {
+		zeroEncoders();
+		while (SensorValue[LiftPot] < 3400) {
+			moveLift(127);
+		}
+
+		moveDrive(127, 127);
+		moveLift(-127);
+		while (SensorValue[LiftPot] > 2610) {
+			wait1Msec(20);
+		}
+
+		transmissionState(1);
+
+		while (SensorValue[LiftPot] > 1400) {
+			wait1Msec(20);
+		}
+
+		moveLift(0);
+		moveDrive(0, 0);
+		break;
+	}
 }
