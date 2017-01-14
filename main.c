@@ -37,19 +37,8 @@ void pre_auton() {
 task autonomous() {
 
 }
-//typedef struct {
-//	int set;
-//	int cur;
-//	float ki;
-//	float integral;
-//	int iCap;
-//	int dead;
-//	float kp;
-//	int power;
-//	int tCap;
-//} PID;
 
-PID liftPID;
+PID liftHoldPID;
 int error;
 int sign;
 int proportion;
@@ -67,22 +56,28 @@ void calcPID(PID tPID){
 		sign = sgn(tPID.power);
 		tPID.power = (fabs(tPID.power)>tPID.tCap) ? (sign*tPID.tCap) : tPID.power;
 	}
-
 }
+
 bool buff = false;
 
 task lift() {
+	bool PIDToggle = false;
 	// 0 for when off
 	// 0.01 for claw open
 	// 0.015 for claw closed
-	liftPID.kp = 0.4;
-	liftPID.ki = 0.1;
-	liftPID.dead = 10;
-	liftPID.iCap = 10;
-	liftPID.tCap = 15;
+	liftHoldPID.kp = 0.4;
+	liftHoldPID.ki = 0.1;
+	liftHoldPID.dead = 10;
+	liftHoldPID.iCap = 10;
+	liftHoldPID.tCap = 15;
 
 	//2770 parallel
 	while (true) {
+		if (vexRT[Btn7D])
+			PIDToggle = false;
+		if (vexRT[Btn7U])
+			PIDToggle = true;
+
 		if (vexRT[Btn6U]) {
 			moveLift(127);
 			buff = true;
@@ -91,14 +86,19 @@ task lift() {
 			buff = true;
 		} else {
 			if (buff) {
-				liftPID.set = SensorValue[LiftPot];
+				liftHoldPID.set = SensorValue[LiftPot];
 			}
+
 			buff = false;
 
-			liftPID.cur = SensorValue[LiftPot];
-			calcPID(liftPID);
-
-			moveLift(liftPID.power);
+			if(SensorValue[LiftPot] > 900 && PIDToggle){
+				liftHoldPID.cur = SensorValue[LiftPot];
+				calcPID(liftHoldPID);
+			}else{
+				liftHoldPID.power = 0;
+				liftHoldPID.integral = 0;
+			}
+			moveLift(liftHoldPID.power);
 		}
 
 		wait1Msec(20);
@@ -116,6 +116,9 @@ task usercontrol() {
 		// arcade drive
 		moveDrive(vexRT[Ch3] + vexRT[Ch1], vexRT[Ch3] - vexRT[Ch1]);
 
+		// tank drive
+		// moveDrive(vexRT[Ch3], vexRT[Ch2]);
+
 		// claw
 		if (vexRT[Btn5D] && (vexRT[Btn5D] != claw.buffer))  // if button is pressed and it was not pressed before
 	   	claw.state = claw.state ? 0 : 1;
@@ -130,8 +133,11 @@ task usercontrol() {
 		if (vexRT[Btn8D])
 			transmissionState(CLOSED);
 
-		if (vexRT[Btn8R])
-			autonLiftUp(2900);
+		if (vexRT[Btn8R]){
+			stopTask(lift);
+			deploy();
+			startTask(lift);
+		}
 
 		if (vexRT[Btn8L])
 			autonLiftUp(2000);

@@ -92,19 +92,19 @@ void hang () {
 
 void autonLiftUp (int angle) {
 	int speed = 120;
-	while (SensorValue(LiftPot) < 0.8 * angle) {
+	while (SensorValue[LiftPot] < 0.8 * angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
 
 	speed /= 2;
-	while (SensorValue(LiftPot) < 0.9 * angle) {
+	while (SensorValue[LiftPot] < 0.9 * angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
 
 	speed = speed*2/3;
-	while (SensorValue(LiftPot) < angle) {
+	while (SensorValue[LiftPot] < angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
@@ -114,19 +114,19 @@ void autonLiftUp (int angle) {
 
 void autonLiftDown (int angle) {
 	int speed = -120;
-	while (SensorValue(LiftPot) > 1.2 * angle) {
+	while (SensorValue[LiftPot] > 1.2 * angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
 
 	speed /= 2;
-	while (SensorValue(LiftPot) > 1.1 * angle) {
+	while (SensorValue[LiftPot] > 1.1 * angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
 
 	speed /= 2;
-	while (SensorValue(LiftPot) > angle) {
+	while (SensorValue[LiftPot] > angle) {
 		moveLift(speed);
 		wait1Msec(20);
 	}
@@ -135,7 +135,9 @@ void autonLiftDown (int angle) {
 }
 
 void deploy() {
-	wait1Msec(1000);
 	autonLiftUp(2000);
 	clawState(OPEN);
+	autonLiftDown(750);
+	wait1Msec(500);
+	clawState(CLOSED);
 }
