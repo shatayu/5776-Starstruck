@@ -1,11 +1,5 @@
 // use claw to knock stars off fence
 void support (int direction) {
-	PID liftPID;
-	liftPID.kp = 0.4;
-	liftPID.ki = 0.1;
-	liftPID.dead = 10;
-	liftPID.iCap = 10;
-	liftPID.tCap = 15;
 
 	//deploy();
 

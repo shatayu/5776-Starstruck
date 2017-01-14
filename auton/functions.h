@@ -85,6 +85,26 @@ void hang () {
 	moveDrive(0, 0);
 }
 
+PID liftPID;
+void autonLift(int angle) {
+	liftPID.set = angle;
+	liftPID.kp = 0.5;
+	liftPID.ki = 0.1;
+	liftPID.dead = 10;
+	liftPID.iCap = 40;
+	liftPID.tCap = 110;
+	liftPID.power = 1;//start loop
+
+	int error = 0;
+	while(fabs(error)>10){
+		error = liftPID.set - liftPID.cur;
+		calcPID(liftPID);
+		wait1Msec(20);
+	}
+	moveLift(liftPID.power);
+}
+
+
 /* makes the following assumptions:
 -higher gyro value = lift is physically higher
 -powering lift with positive number moves it upward, negative number moves it downward

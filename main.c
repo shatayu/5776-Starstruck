@@ -39,24 +39,6 @@ task autonomous() {
 }
 
 PID liftHoldPID;
-int error;
-int sign;
-int proportion;
-
-void calcPID(PID tPID){
-	error = tPID.set - tPID.cur;
-	if (fabs(error) > tPID.dead) {
-		tPID.integral += error*tPID.ki;
-		sign = sgn(tPID.integral);
-		tPID.integral = (fabs(tPID.integral)>tPID.iCap) ? sign*tPID.iCap : tPID.integral;
-
-		proportion = error * tPID.kp;
-
-		tPID.power = proportion + tPID.integral;
-		sign = sgn(tPID.power);
-		tPID.power = (fabs(tPID.power)>tPID.tCap) ? (sign*tPID.tCap) : tPID.power;
-	}
-}
 
 bool buff = false;
 
@@ -70,6 +52,7 @@ task lift() {
 	liftHoldPID.dead = 10;
 	liftHoldPID.iCap = 10;
 	liftHoldPID.tCap = 15;
+
 
 	//2770 parallel
 	while (true) {
@@ -139,9 +122,11 @@ task usercontrol() {
 			startTask(lift);
 		}
 
-		if (vexRT[Btn8L])
-			autonLiftUp(2000);
-
+		if (vexRT[Btn8L]){
+			stopTask(lift);
+			autonLift(1200);
+			startTask(lift);
+		}
 		wait1Msec(20);
 	}
 }
