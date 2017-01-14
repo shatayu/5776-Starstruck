@@ -48,7 +48,7 @@ void move (int ticks, int direction) {
 -turning at 84.9 degrees is a 90 degree turn
 */
 void rotate (float degrees, int direction) {
-	int speed = 110;
+	int speed = 100;
 	int decelAngle = 30;
 
 	SensorValue[Gyro] = 0;
@@ -58,7 +58,7 @@ void rotate (float degrees, int direction) {
 	}
 
 	while (abs(SensorValue[Gyro]) < degrees * 10) {
-		moveDrive((0.5 * direction * speed), (0.5 * -direction * speed));
+		moveDrive((0.3 * direction * speed), (0.3 * -direction * speed));
 		wait1Msec(20);
 	}
 

@@ -40,7 +40,7 @@ void pre_auton() {
 }
 
 task autonomous() {
-	supportBlue(1);
+	supportBlue(-1);
 
 
 }
