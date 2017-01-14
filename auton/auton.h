@@ -1,14 +1,18 @@
 // use claw to knock stars off fence
-void fenceStars (int direction) {
-	move(START_TO_LINE, FORWARD);
-	rotate(45, direction * COUNTERCLOCKWISE);
-	move(ALIGN, FORWARD);
-	rotate(45, direction * CLOCKWISE);
-	deploy();
-	autonLiftUp(LIFT_HIGH_FENCE);
+void support (int direction) {
+	PID liftPID;
+	liftPID.kp = 0.4;
+	liftPID.ki = 0.1;
+	liftPID.dead = 10;
+	liftPID.iCap = 10;
+	liftPID.tCap = 15;
+
+	//deploy();
+
 	clawState(OPEN);
-	move(LINE_TO_FENCE, FORWARD);
-	move(FENCE_TO_LINE, BACKWARD);
+	move(1800, FORWARD); // check constant
+	clawState(CLOSED);
+	move(1800, BACKWARD);
 }
 
 // pick up cube and knock it over central fence, knocking stars with it

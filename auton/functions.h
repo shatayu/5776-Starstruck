@@ -135,8 +135,7 @@ void autonLiftDown (int angle) {
 }
 
 void deploy() {
-	//clawState(1);
 	wait1Msec(1000);
 	autonLiftUp(2000);
-	SensorValue[ClawSolenoid] = 0;
+	clawState(OPEN);
 }

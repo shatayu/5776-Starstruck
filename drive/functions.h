@@ -44,15 +44,3 @@ void unhang () {
 	wait1Msec(500);
 	moveLift(0);
 }
-
-task liftPID () {
-	float kp;
-	float ki;
-	float kd;
-
-	float error;
-	float integral;
-	float derivative;
-
-
-}
