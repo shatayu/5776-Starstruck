@@ -15,7 +15,6 @@ PID liftHoldPID;
 
 bool buff = false;
 
-
 void calcPID(PID tPID){
 	int error;
 	int sign;
@@ -25,21 +24,19 @@ void calcPID(PID tPID){
 	if (fabs(error) > tPID.dead) {
 		proportion = error * tPID.kp;
 
-		tPID.integral += error*tPID.ki;
+		tPID.integral += error * tPID.ki;
 		sign = sgn(tPID.integral);
-		tPID.integral = (fabs(tPID.integral)>tPID.iCap) ? sign*tPID.iCap : tPID.integral;
+		tPID.integral = (fabs(tPID.integral) > tPID.iCap) ? sign * tPID.iCap : tPID.integral;
 
 		tPID.power = proportion + tPID.integral;
 		sign = sgn(tPID.power);
-		tPID.power = (fabs(tPID.power)>tPID.tCap) ? (sign*tPID.tCap) : tPID.power;
+		tPID.power = (fabs(tPID.power) > tPID.tCap) ? (sign * tPID.tCap) : tPID.power;
 	}
 }
 
 task lift() {
 	bool PIDToggle = false;
-	// 0 for when off
-	// 0.01 for claw open
-	// 0.015 for claw closed
+
 	liftHoldPID.kp = 0.4;
 	liftHoldPID.ki = 0.1;
 	liftHoldPID.dead = 10;
@@ -77,6 +74,30 @@ task lift() {
 			moveLift(liftHoldPID.power);
 		}
 
+		wait1Msec(20);
+	}
+}
+
+// use claw to knock stars off fence
+PID holdPID;
+task autonHold() {
+	holdPID.kp = 0.4;
+	holdPID.ki = 0.1;
+	holdPID.dead = 10;
+	holdPID.iCap = 10;
+	holdPID.tCap = 15;
+
+	holdPID.set = SensorValue[LiftPot];
+
+	while (true) {
+		if(SensorValue[LiftPot] > 900){
+			holdPID.cur = SensorValue[LiftPot];
+			calcPID(holdPID);
+		} else {
+			holdPID.power = 0;
+			holdPID.integral = 0;
+		}
+		moveLift(holdPID.power);
 		wait1Msec(20);
 	}
 }

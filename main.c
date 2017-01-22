@@ -33,14 +33,12 @@
 #include "auton/functions.h"
 #include "auton/auton.h"
 
-
-
 void pre_auton() {
 	calibrate();
 }
 
 task autonomous() {
-	supportBlue(-1);
+	backFence(1);
 }
 
 
@@ -54,9 +52,6 @@ task usercontrol() {
 	while (true) {
 		// arcade drive
 		moveDrive(vexRT[Ch3] + vexRT[Ch1], vexRT[Ch3] - vexRT[Ch1]);
-
-		// tank drive
-		// moveDrive(vexRT[Ch3], vexRT[Ch2]);
 
 		// claw
 		if (vexRT[Btn5D] && (vexRT[Btn5D] != claw.buffer))  // if button is pressed and it was not pressed before
@@ -72,18 +67,11 @@ task usercontrol() {
 		if (vexRT[Btn8D])
 			transmissionState(CLOSED);
 
-			if (vexRT[Btn8R]) {
-				stopTask(lift);
-				supportBlue(-1);
-				startTask(lift);
-			}
+		if (vexRT[Btn8L])
+			deploy();
 
-		if (vexRT[Btn8L]){
-			stopTask(lift);
-			hang();
-			startTask(lift);
-			wait1Msec(1000);
-		}
+
+
 
 		wait1Msec(20);
 	}

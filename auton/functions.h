@@ -1,9 +1,20 @@
 void calibrate() {
 	 SensorType[Gyro] = sensorNone;
-	 wait1Msec(500);
+
+	 for (int i = 0; i < 25; i++) {
+	   if (vexRT[Btn8R])
+	     return;
+
+	   wait1Msec(20);
+	 }
 
 	 SensorType[Gyro] = sensorGyro;
-	 wait1Msec(2000);
+	 for (int i = 0; i < 100; i++) {
+	   if (vexRT[Btn8R])
+	     return;
+
+	   wait1Msec(20);
+	 }
 }
 
 void zeroEncoders () {
@@ -69,24 +80,6 @@ void rotate (float degrees, int direction) {
 }
 
 PID liftPID;
-void autonLift(int angle) {
-	liftPID.set = angle;
-	liftPID.kp = 0.5;
-	liftPID.ki = 0.1;
-	liftPID.dead = 10;
-	liftPID.iCap = 40;
-	liftPID.tCap = 110;
-	liftPID.power = 1;//start loop
-
-	int error = 0;
-	while(fabs(error)>10){
-		error = liftPID.set - liftPID.cur;
-		calcPID(liftPID);
-		wait1Msec(20);
-	}
-	moveLift(liftPID.power);
-}
-
 
 /* makes the following assumptions:
 -higher gyro value = lift is physically higher
@@ -95,18 +88,7 @@ void autonLift(int angle) {
 
 void autonLiftUp (int angle) {
 	int speed = 120;
-	while (SensorValue[LiftPot] < 0.8 * angle) {
-		moveLift(speed);
-		wait1Msec(20);
-	}
 
-	speed /= 2;
-	while (SensorValue[LiftPot] < 0.9 * angle) {
-		moveLift(speed);
-		wait1Msec(20);
-	}
-
-	speed = speed*2/3;
 	while (SensorValue[LiftPot] < angle) {
 		moveLift(speed);
 		wait1Msec(20);
@@ -117,18 +99,7 @@ void autonLiftUp (int angle) {
 
 void autonLiftDown (int angle) {
 	int speed = -120;
-	while (SensorValue[LiftPot] > 1.2 * angle) {
-		moveLift(speed);
-		wait1Msec(20);
-	}
 
-	speed /= 2;
-	while (SensorValue[LiftPot] > 1.1 * angle) {
-		moveLift(speed);
-		wait1Msec(20);
-	}
-
-	speed /= 2;
 	while (SensorValue[LiftPot] > angle) {
 		moveLift(speed);
 		wait1Msec(20);
@@ -138,8 +109,10 @@ void autonLiftDown (int angle) {
 }
 
 void deploy() {
-	autonLiftUp(1300);
+	autonLiftUp(1900);
+	wait1Msec(350);
 	clawState(OPEN);
+	wait1Msec(350);
 	autonLiftDown(750);
 }
 
