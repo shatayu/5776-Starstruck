@@ -28,19 +28,25 @@ void backFenceRight (int direction) {
 
 	//-------
 
-	//wait1Msec(100);
-	//autonLiftDown(800);
-	//wait1Msec(100);
-	//startTask(autonHold);
-	//clawState(OPEN);
-	//rotate(90, CLOCKWISE);
-	//move(2100, FORWARD);
-	//clawState(CLOSED);
-	//stopTask(autonHold);
-	//autonLiftUp(1800);
-	//startTask(autonHold);
-	//rotate(90, COUNTERCLOCKWISE);
-	//move(900, BACKWARD);
+	wait1Msec(500);
+	autonLiftDown(800);
+	wait1Msec(100);
+	startTask(autonHold);
+	clawState(OPEN);
+	rotate(90, CLOCKWISE); // make sure turn is actually 90 degrees
+	move(1500, FORWARD); // check distance
+	clawState(CLOSED);
+	stopTask(autonHold);
+	autonLiftUp(1800);
+	startTask(autonHold);
+	rotate(90, COUNTERCLOCKWISE); // make sure turn is actually 90 degrees
+	move(950, BACKWARD); // check distance
+
+	moveLift(127);
+	while (SensorValue[LiftPot] < 2400) wait1Msec(20);
+	clawState(OPEN);
+	while (SensorValue[LiftPot] < 2700) wait1Msec(20);
+	moveLift(0);
 }
 
 void backFenceLeft (int direction) {
@@ -73,17 +79,24 @@ void backFenceLeft (int direction) {
 
 	//-------
 
-	//wait1Msec(100);
-	//autonLiftDown(800);
-	//wait1Msec(100);
-	//startTask(autonHold);
-	//clawState(OPEN);
-	//rotate(90, CLOCKWISE);
-	//move(2100, FORWARD);
-	//clawState(CLOSED);
-	//stopTask(autonHold);
-	//autonLiftUp(1800);
-	//startTask(autonHold);
-	//rotate(90, COUNTERCLOCKWISE);
-	//move(900, BACKWARD);
+	wait1Msec(500);
+	autonLiftDown(800);
+	wait1Msec(100);
+	startTask(autonHold);
+	clawState(OPEN);
+	rotate(90, COUNTERCLOCKWISE); // make sure turn is actually 90 degrees
+	move(1500, FORWARD); // check distance
+	clawState(CLOSED);
+	stopTask(autonHold);
+	autonLiftUp(1800);
+	startTask(autonHold);
+	rotate(90, CLOCKWISE); // make sure turn is actually 90 degrees
+	move(950, BACKWARD); // check distance
+	stopTask(autonHold);
+	moveLift(127);
+	while (SensorValue[LiftPot] < 2400) wait1Msec(20);
+	clawState(OPEN);
+	while (SensorValue[LiftPot] < 2700) wait1Msec(20);
+	moveLift(0);
+	move(800, FORWARD);
 }
