@@ -79,13 +79,17 @@ void backFenceLeft (int direction) {
 
 	//-------
 
-	wait1Msec(500);
+
+}
+
+void cubeScoreLeft() {
+		wait1Msec(500);
 	autonLiftDown(800);
 	wait1Msec(100);
 	startTask(autonHold);
 	clawState(OPEN);
-	rotate(90, COUNTERCLOCKWISE); // make sure turn is actually 90 degrees
-	move(1500, FORWARD); // check distance
+	rotate(87, COUNTERCLOCKWISE); // make sure turn is actually 90 degrees
+	move(1600, FORWARD); // check distance
 	clawState(CLOSED);
 	stopTask(autonHold);
 	autonLiftUp(1800);

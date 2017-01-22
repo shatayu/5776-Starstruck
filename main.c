@@ -40,6 +40,7 @@ void pre_auton() {
 task autonomous() {
 	//backFenceRight(1);
 	backFenceLeft(1);
+	cubeScoreLeft();
 }
 
 
