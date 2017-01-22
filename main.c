@@ -38,7 +38,8 @@ void pre_auton() {
 }
 
 task autonomous() {
-	backFence(1);
+	//backFenceRight(1);
+	backFenceLeft(1);
 }
 
 
