@@ -2,15 +2,15 @@
 void moveDrive (int left, int right) {
 	motor[FLDrive] = left;
 	motor[BLDrive] = left;
+	motor[LDrive] = left;
 	motor[FRDrive] = right;
 	motor[BRDrive] = right;
+	motor[RDrive] = right;
 }
 
 void moveLift (int speed) {
-	motor[LLLift] = speed;
-	motor[LRLift] = speed;
-	motor[RLLift] = speed;
-	motor[RRLift] = speed;
+	motor[LLift] = speed;
+	motor[RLift] = speed;
 }
 
 void clawState (int state) {
