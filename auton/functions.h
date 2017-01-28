@@ -23,6 +23,9 @@ void zeroEncoders () {
 }
 
 void move (int ticks, int direction) {
+	int BRAKE_SPEED = 30;
+	int BRAKE_TIME = 30;
+
 	zeroEncoders();
 	int speed = 120;
 
@@ -59,17 +62,18 @@ void move (int ticks, int direction) {
 -turning at 84.9 degrees is a 90 degree turn
 */
 void rotate (float degrees, int direction) {
-	int speed = 100;
-	int decelAngle = 30;
+	int SPEED = 100;
+	int DECEL_ANGLE = 30;
+	int BRAKE_SPEED = 30;
 
 	SensorValue[Gyro] = 0;
-	while(abs(SensorValue[Gyro]) < (degrees -  decelAngle) * 10) {
-		moveDrive((direction * speed), (-direction * speed));
+	while(abs(SensorValue[Gyro]) < (degrees -  DECEL_ANGLE) * 10) {
+		moveDrive((direction * SPEED), (-direction * SPEED));
 		wait1Msec(20);
 	}
 
 	while (abs(SensorValue[Gyro]) < degrees * 10) {
-		moveDrive((0.3 * direction * speed), (0.3 * -direction * speed));
+		moveDrive((0.3 * direction * SPEED), (0.3 * -direction * SPEED));
 		wait1Msec(20);
 	}
 

@@ -49,7 +49,7 @@ task usercontrol() {
 	claw.state = 0;
 	claw.buffer = 0;
 
-	//startTask(lift);
+	startTask(lift);
 
 	while (true) {
 		// arcade drive
