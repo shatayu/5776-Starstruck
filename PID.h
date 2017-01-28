@@ -46,18 +46,18 @@ task lift() {
 
 	//2770 parallel
 	while (true) {
-		if (vexRT[Btn7D])
+		if (c.PIDOff)
 			PIDToggle = false;
-		if (vexRT[Btn7U])
+		if (c.PIDOn)
 			PIDToggle = true;
 
-		if (vexRT[Btn6U]) {
+		if (c.liftUp) {
 			moveLift(127);
 			buff = true;
-		} else if (vexRT[Btn6D]) {
+			} else if (c.liftDown) {
 			moveLift(-127);
 			buff = true;
-		} else {
+			} else {
 			if (buff) {
 				liftHoldPID.set = SensorValue[LiftPot];
 			}
@@ -67,7 +67,7 @@ task lift() {
 			if(SensorValue[LiftPot] > 900 && PIDToggle){
 				liftHoldPID.cur = SensorValue[LiftPot];
 				calcPID(liftHoldPID);
-			}else{
+				}else{
 				liftHoldPID.power = 0;
 				liftHoldPID.integral = 0;
 			}
@@ -93,7 +93,7 @@ task autonHold() {
 		if(SensorValue[LiftPot] > 900){
 			holdPID.cur = SensorValue[LiftPot];
 			calcPID(holdPID);
-		} else {
+			} else {
 			holdPID.power = 0;
 			holdPID.integral = 0;
 		}

@@ -1,5 +1,5 @@
 void calibrate() {
-	 SensorType[Gyro] = sensorNone;
+	 SensorType[in2] = sensorNone;
 
 	 for (int i = 0; i < 25; i++) {
 	   if (vexRT[Btn8R])
@@ -8,7 +8,7 @@ void calibrate() {
 	   wait1Msec(20);
 	 }
 
-	 SensorType[Gyro] = sensorGyro;
+	 SensorType[in2] = sensorGyro;
 	 for (int i = 0; i < 100; i++) {
 	   if (vexRT[Btn8R])
 	     return;
@@ -22,12 +22,11 @@ void zeroEncoders () {
 	nMotorEncoder[BRDrive] = 0;
 }
 
-void move (int ticks, int direction) {
-	int BRAKE_SPEED = 30;
-	int BRAKE_TIME = 30;
+void move (int ticks, int direction, int speed = 80) {
+	int BRAKE_SPEED = 50;
+	int BRAKE_TIME = 40;
 
 	zeroEncoders();
-	int speed = 120;
 
 	int left = abs(nMotorEncoder[BLDrive]);
 	int right = abs(nMotorEncoder[BRDrive]);
@@ -61,8 +60,7 @@ void move (int ticks, int direction) {
 - turns slightly more than directed
 -turning at 84.9 degrees is a 90 degree turn
 */
-void rotate (float degrees, int direction) {
-	int SPEED = 100;
+void rotate (float degrees, int direction, int SPEED = 100) {
 	int DECEL_ANGLE = 30;
 	int BRAKE_SPEED = 30;
 
@@ -81,6 +79,7 @@ void rotate (float degrees, int direction) {
 	moveDrive((-direction * BRAKE_SPEED), (direction * BRAKE_SPEED));
 	wait1Msec(100);
 	zeroEncoders();
+	moveDrive(0, 0);
 }
 
 PID liftPID;
@@ -89,8 +88,8 @@ PID liftPID;
 -higher gyro value = lift is physically higher
 -powering lift with positive number moves it upward, negative number moves it downward
 */
-
 void autonLiftUp (int angle) {
+	stopTask(autonHold);
 	int speed = 120;
 
 	while (SensorValue[LiftPot] < angle) {
@@ -112,12 +111,13 @@ void autonLiftDown (int angle) {
 	moveLift(0);
 }
 
-void deploy() {
+task deploy() {
 	autonLiftUp(1900);
-	wait1Msec(350);
+	wait1Msec(150);
 	clawState(OPEN);
-	wait1Msec(350);
+	wait1Msec(150);
 	autonLiftDown(750);
+	stopTask(deploy);
 }
 
 
@@ -154,4 +154,22 @@ void hang () {
 		moveDrive(0, 0);
 		break;
 	}
+}
+
+task launch() {
+	while (SensorValue[LiftPot] < 2300) {
+		moveLift(127);
+		wait1Msec(20);
+	}
+	moveLift(0);
+	stopTask(launch);
+}
+
+task reset() {
+	while (SensorValue[LiftPot] > 750) {
+		moveLift(-127);
+		wait1Msec(20);
+	}
+	moveLift(0);
+	stopTask(reset);
 }
