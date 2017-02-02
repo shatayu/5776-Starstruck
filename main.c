@@ -35,9 +35,10 @@
 #include "PID/PID.h"
 #include "PID/PID.c"
 
-#include "auton/constants.h"
-#include "auton/functions.h"
 #include "auton/auton.h"
+#include "auton/baseFunctions.c"
+#include "auton/liftFunctions.c"
+#include "auton/autons.c"
 
 void pre_auton() {
 	calibrate();
