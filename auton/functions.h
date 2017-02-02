@@ -56,10 +56,6 @@ void move (int ticks, int direction, int speed = 80) {
 	moveDrive(0, 0);
 }
 
-/* do not rotate less than 20 degrees; decel kicks in at 20 degrees
-- turns slightly more than directed
--turning at 84.9 degrees is a 90 degree turn
-*/
 void rotate (float degrees, int direction, int SPEED = 100) {
 	int DECEL_ANGLE = 30;
 	int BRAKE_SPEED = 30;
@@ -82,12 +78,6 @@ void rotate (float degrees, int direction, int SPEED = 100) {
 	moveDrive(0, 0);
 }
 
-PID liftPID;
-
-/* makes the following assumptions:
--higher gyro value = lift is physically higher
--powering lift with positive number moves it upward, negative number moves it downward
-*/
 void autonLiftUp (int angle) {
 	stopTask(autonHold);
 	int speed = 120;
@@ -120,42 +110,6 @@ task deploy() {
 	stopTask(deploy);
 }
 
-
-void hang () {
-	/*
-	-align
-	-lift up
-	-stop lifting
-	-drive forward
-	-lift down (while driving forward)
-	-engage transmission
-	-keep lifting down and driving forward until desired height is reached
-	*/
-	clearTimer(T1);
-	while (time1[T1] < 5000) {
-		zeroEncoders();
-		while (SensorValue[LiftPot] < 3400) {
-			moveLift(127);
-		}
-
-		moveDrive(127, 127);
-		moveLift(-127);
-		while (SensorValue[LiftPot] > 2610) {
-			wait1Msec(20);
-		}
-
-		transmissionState(1);
-
-		while (SensorValue[LiftPot] > 1400) {
-			wait1Msec(20);
-		}
-
-		moveLift(0);
-		moveDrive(0, 0);
-		break;
-	}
-}
-
 task launch() {
 	while (SensorValue[LiftPot] < 2300) {
 		moveLift(127);
@@ -166,7 +120,7 @@ task launch() {
 }
 
 task reset() {
-	while (SensorValue[LiftPot] > 750) {
+	while (SensorValue[LiftPot] > 790) {
 		moveLift(-127);
 		wait1Msec(20);
 	}

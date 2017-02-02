@@ -1,21 +1,5 @@
-typedef struct {
-	int set;
-	int cur;
-	float kp;
-	float ki;
-	float integral;
-	int iCap;
-	int dead;
-	int power;
-	int tCap;
-} PID;
-
-
-PID liftHoldPID;
-
-bool buff = false;
-
-void calcPID(PID tPID){
+// calculates PID values at a given point
+void calcPID(PID tPID) {
 	int error;
 	int sign;
 	int proportion;
@@ -34,6 +18,11 @@ void calcPID(PID tPID){
 	}
 }
 
+
+bool buff = false;
+PID liftHoldPID;
+
+// manages lift control, activates PID when lift is not moving up or down and PID is on
 task lift() {
 	bool PIDToggle = false;
 
