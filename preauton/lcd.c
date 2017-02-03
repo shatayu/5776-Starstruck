@@ -1,8 +1,9 @@
-int autonSelector() {
-	int numAutons = 6;
+// splits auton into numAutons parts, returns values from [0,(numAutons-1)]
+int autonSelector(int numAutons) {
 	return (int) ((SensorValue[Selector])/(4096/(numAutons - 1)));
 }
 
+// writes data to second LCD screen (read-only, buttons do not work)
 int writeSecondLCD(int line, string s) {
     unsigned char data[22];
     int i, cs;
@@ -51,6 +52,7 @@ int writeSecondLCD(int line, string s) {
     return 1;
 }
 
+// manages LCD
 task LCD() {
 	bLCDBacklight = true;
 	string line1 = "Main PE  9V  ";
@@ -70,8 +72,6 @@ task LCD() {
 		line2 += BackupBattery;
 
 		displayLCDString(1, 0, line2);
-		string s = "allahu akbar";
-		string s1 = "bush did 9/11";
 		writeSecondLCD(0, line1);
 		writeSecondLCD(1, line2);
 		wait1Msec(20);

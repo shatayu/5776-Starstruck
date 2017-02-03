@@ -22,7 +22,7 @@ void zeroEncoders () {
 	nMotorEncoder[BRDrive] = 0;
 }
 
-void move (int ticks, int direction, int speed = 80) {
+void move (int ticks, int direction, int speed) {
 	int BRAKE_SPEED = 50;
 	int BRAKE_TIME = 40;
 
@@ -56,18 +56,18 @@ void move (int ticks, int direction, int speed = 80) {
 	moveDrive(0, 0);
 }
 
-void rotate (float degrees, int direction, int SPEED = 100) {
+void rotate (float degrees, int direction, int speed) {
 	int DECEL_ANGLE = 30;
 	int BRAKE_SPEED = 30;
 
 	SensorValue[Gyro] = 0;
 	while(abs(SensorValue[Gyro]) < (degrees -  DECEL_ANGLE) * 10) {
-		moveDrive((direction * SPEED), (-direction * SPEED));
+		moveDrive((direction * speed), (-direction * speed));
 		wait1Msec(20);
 	}
 
 	while (abs(SensorValue[Gyro]) < degrees * 10) {
-		moveDrive((0.3 * direction * SPEED), (0.3 * -direction * SPEED));
+		moveDrive((0.3 * direction * speed), (0.3 * -direction * speed));
 		wait1Msec(20);
 	}
 
