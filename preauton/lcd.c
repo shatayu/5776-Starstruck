@@ -1,16 +1,27 @@
-// splits auton into numAutons parts, returns values from [0,(numAutons-1)]
+/*
+Splits auton into numAutons parts, returns values from [0,(numAutons-1)].
+
+@param numAutons: the number of autons the robot has
+*/
 int autonSelector(int numAutons) {
 	return (int) ((SensorValue[Selector])/(4096/(numAutons - 1)));
 }
 
-// writes data to second LCD screen (read-only, buttons do not work)
+/*
+writes data to second LCD screen (read-only, buttons do not work)
+
+@param line: the line of the string to be written to the LCD
+@param s: the string to be written to the LCD
+
+@return 1 if successful
+*/
 int writeSecondLCD(int line, string s) {
     unsigned char data[22];
     int i, cs;
     int len;
 
     // bounds check line variable
-    if ((line < 0) || (line > 1))
+    if ((line < BOTTOM) || (line > TOP))
         return -1;
 
     // Header for LCD communication
@@ -52,15 +63,17 @@ int writeSecondLCD(int line, string s) {
     return 1;
 }
 
-// manages LCD
-task LCD() {
+/*
+Task to handle data on LCD
+*/
+task batteryLCD() {
 	bLCDBacklight = true;
 	string line1 = "Main PE  9V  ";
 	string line2;
 	string mainBattery, PEBattery, BackupBattery;
 	while (true) {
-		displayLCDString(0, 0, line1);
-		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/985.2); //Build the value to be displayed
+		displayLCDString(TOP, 0, line1);
+		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/985.2); // Build the value to be displayed
 
 		sprintf(PEBattery, "%1.2f%c", SensorValue[PowerExpander]/280.5);
 
@@ -71,9 +84,7 @@ task LCD() {
 		line2 += "  ";
 		line2 += BackupBattery;
 
-		displayLCDString(1, 0, line2);
-		writeSecondLCD(0, line1);
-		writeSecondLCD(1, line2);
+		displayLCDString(BOTTOM, 0, line2);
 		wait1Msec(20);
 	}
 }

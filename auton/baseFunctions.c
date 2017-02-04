@@ -1,6 +1,11 @@
+/*
+Calibrates gyroscope in pre-auton. Includes button interrupt in case robot restarts during drive.
+*/
 void calibrate() {
+	// remove gyro from port
 	 SensorType[in2] = sensorNone;
 
+	 // interruptable wait
 	 for (int i = 0; i < 25; i++) {
 	   if (vexRT[Btn8R])
 	     return;
@@ -8,6 +13,7 @@ void calibrate() {
 	   wait1Msec(20);
 	 }
 
+	 // re-add gyro to port 2
 	 SensorType[in2] = sensorGyro;
 	 for (int i = 0; i < 100; i++) {
 	   if (vexRT[Btn8R])
@@ -17,11 +23,21 @@ void calibrate() {
 	 }
 }
 
+/*
+zeros encoder values
+*/
 void zeroEncoders () {
 	nMotorEncoder[BLDrive] = 0;
 	nMotorEncoder[BRDrive] = 0;
 }
 
+/*
+Basic function to move straight in auton. Includes deceleration curve.
+
+@param ticks: the number of encoder ticks to move
+@param direction: FORWARD/BACKWARD, the direction in which to move.
+@param speed: the amount of power to apply to each motor (optional, default 100).
+*/
 void move (int ticks, int direction, int speed) {
 	int BRAKE_SPEED = 50;
 	int BRAKE_TIME = 40;
@@ -40,7 +56,7 @@ void move (int ticks, int direction, int speed) {
 		wait1Msec(10);
 	}
 
-	speed /= 3;
+	speed /= 3; // first deceleration
 
 	while ((left < ticks) && (right < ticks)) {
 		left = abs(nMotorEncoder[BLDrive]);
@@ -56,6 +72,13 @@ void move (int ticks, int direction, int speed) {
 	moveDrive(0, 0);
 }
 
+/*
+Basic function to do a point turn.
+
+@param degrees: the number of degrees to turn
+@param direction: the direction in which to turn (CLOCKWISE/COUNTERCLOCKWISE)
+@param speed: the amount of power to give each motor (default 80)
+*/
 void rotate (float degrees, int direction, int speed) {
 	int DECEL_ANGLE = 30;
 	int BRAKE_SPEED = 30;
@@ -66,6 +89,7 @@ void rotate (float degrees, int direction, int speed) {
 		wait1Msec(20);
 	}
 
+	// decelerate down to 30% of original speed
 	while (abs(SensorValue[Gyro]) < degrees * 10) {
 		moveDrive((0.3 * direction * speed), (0.3 * -direction * speed));
 		wait1Msec(20);

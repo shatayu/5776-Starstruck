@@ -22,7 +22,9 @@ void calcPID(PID tPID) {
 bool buff = false;
 PID liftHoldPID;
 
-// manages lift control, activates PID when lift is not moving up or down and PID is on
+/*
+manages lift control, activates PID when lift is not moving up or down and PID is on
+*/
 task lift() {
 	bool PIDToggle = false;
 
@@ -67,8 +69,11 @@ task lift() {
 	}
 }
 
-// use claw to knock stars off fence
 PID holdPID;
+
+/*
+Holds lift at position it is in at time of task starting.
+*/
 task autonHold() {
 	holdPID.kp = 0.4;
 	holdPID.ki = 0.1;

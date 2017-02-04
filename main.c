@@ -42,7 +42,7 @@
 
 void pre_auton() {
 	calibrate();
-	startTask(LCD);
+	startTask(batteryLCD);
 }
 
 task autonomous() {

@@ -12,6 +12,10 @@
 #define OPEN 0
 #define CLOSED 1
 
+// transmission constants
+#define ENGAGED 1
+#define DISENGAGED 0
+
 void calibrate();
 void zeroEncoders();
 void move (int ticks, int direction, int speed = 100);
