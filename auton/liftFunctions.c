@@ -48,10 +48,11 @@ Lifts lift to height appropriate for dumping objects over the side (high) fences
 Made a task to be able to lift for dump while moving.
 */
 task launch() {
-	while (SensorValue[LiftPot] < 2300) {
+	while (SensorValue[LiftPot] < 2500) {
 		moveLift(127);
 		wait1Msec(20);
 	}
+	//wait1Msec(400);
 	moveLift(0);
 	stopTask(launch);
 }
@@ -59,12 +60,11 @@ task launch() {
 /*
 Brings lift down to neutral position. Made task to bring lift down while moving.
 */
-task reset() {
+void reset() {
 	int potHeightDown = 790;
 	while (SensorValue[LiftPot] > potHeightDown) {
 		moveLift(-127);
 		wait1Msec(20);
 	}
 	moveLift(0);
-	stopTask(reset);
 }

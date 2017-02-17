@@ -65,10 +65,6 @@ void move (int ticks, int direction, int speed) {
 		wait1Msec(10);
 	}
 
-
-	// brake
-	moveDrive(-direction * BRAKE_SPEED, -direction * BRAKE_SPEED);
-	wait1Msec(BRAKE_TIME);
 	moveDrive(0, 0);
 }
 
@@ -99,5 +95,11 @@ void rotate (float degrees, int direction, int speed) {
 	moveDrive((-direction * BRAKE_SPEED), (direction * BRAKE_SPEED));
 	wait1Msec(100);
 	zeroEncoders();
+	moveDrive(0, 0);
+}
+
+void brake(int direction) {
+	moveDrive(-30 * direction, -30 * direction);
+	wait1Msec(50);
 	moveDrive(0, 0);
 }
