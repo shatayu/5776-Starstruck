@@ -27,8 +27,8 @@ void calibrate() {
 zeros encoder values
 */
 void zeroEncoders () {
-	nMotorEncoder[BLDrive] = 0;
-	nMotorEncoder[BRDrive] = 0;
+	SensorValue[LQuad] = 0;
+	SensorValue[RQuad] = 0;
 }
 
 /*
@@ -44,14 +44,14 @@ void move (int ticks, int direction, int speed) {
 
 	zeroEncoders();
 
-	int left = abs(nMotorEncoder[BLDrive]);
-	int right = abs(nMotorEncoder[BRDrive]);
+	int left = abs(SensorValue[LQuad]);
+	int right = abs(SensorValue[RQuad]);
 
 	moveDrive(direction * speed, direction * speed);
 
 	while ((left < 0.7 * ticks) && (right < 0.7 * ticks)) {
-		left = abs(nMotorEncoder[BLDrive]);
-		right = abs(nMotorEncoder[BRDrive]);
+		left = abs(SensorValue[LQuad]);
+		right = abs(SensorValue[RQuad]);
 
 		wait1Msec(10);
 	}
@@ -59,8 +59,8 @@ void move (int ticks, int direction, int speed) {
 	speed /= 3; // first deceleration
 
 	while ((left < ticks) && (right < ticks)) {
-		left = abs(nMotorEncoder[BLDrive]);
-		right = abs(nMotorEncoder[BRDrive]);
+		left = abs(SensorValue[LQuad]);
+		right = abs(SensorValue[RQuad]);
 
 		wait1Msec(10);
 	}
@@ -95,6 +95,23 @@ void rotate (float degrees, int direction, int speed) {
 	moveDrive((-direction * BRAKE_SPEED), (direction * BRAKE_SPEED));
 	wait1Msec(100);
 	zeroEncoders();
+	moveDrive(0, 0);
+}
+
+void encoderRotate (int ticks, int direction) {
+	zeroEncoders();
+	while (abs(SensorValue[RQuad]) < 0.8 * ticks && abs(SensorValue[LQuad]) < 0.8 * ticks) {
+		moveDrive(127 * direction, -127 * direction);
+		wait1Msec(20);
+	}
+
+	while (abs(SensorValue[RQuad]) < ticks && abs(SensorValue[LQuad]) < ticks) {
+		moveDrive(70 * direction, -70 * direction);
+		wait1Msec(20);
+	}
+
+	moveDrive(-30 * direction, 30 * direction);
+	wait1Msec(50);
 	moveDrive(0, 0);
 }
 

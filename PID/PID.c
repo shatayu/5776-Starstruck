@@ -46,7 +46,7 @@ task lift() {
 			moveLift(127);
 			buff = true;
 			} else if (c.liftDown) {
-			moveLift(-127);
+			moveLift(127);
 			buff = true;
 			} else {
 			if (buff) {

@@ -1,42 +1,34 @@
 /*
-Low-level basic way to power drive motors.
+Low-level, basic way to power drive motors.
 
 @param left: the amount of power to give to the left side motors
 @param right: the amount of power to give to the right side motors
 */
 void moveDrive (int left, int right) {
-	motor[FLDrive] = left;
-	motor[BLDrive] = left;
 	motor[LDrive] = left;
-	motor[FRDrive] = right;
-	motor[BRDrive] = right;
 	motor[RDrive] = right;
 }
 
 /*
 Low-level, basic way to power lift
 
-@param speed: how much power to give to the lift
+@param power: how much power to give to the lift
+@param direction: which direction to move the lift (UP or DOWN)
 */
-void moveLift (int speed) {
-	motor[LLift] = speed;
-	motor[RLift] = speed;
+void moveLift (int power) {
+	motor[LLift] = power;
+	motor[LPEXLift] = power;
+	motor[RLift] = power;
+	motor[RPEXLift] = power;
 }
 
 /*
-Low-level, basic way to assign the claw a state
+Low-level, basic way to power claw motors
 
-@param state: the state of the claw (OPEN/CLOSED)
+@param power: the amount of power to give to the claw
+@param direction: whether to open or close the claw;
 */
-void clawState (int state) {
-	SensorValue[ClawSolenoid] = state;
-}
-
-/*
-Low-level, bsaic way to assign the transmission a state
-
-@param state: the state of the transmission (ENGAGED/DISENGAGED)
-*/
-void transmissionState (int state) {
-	SensorValue[Transmission] = state;
+void moveClaw (int power, int direction) {
+	motor[LClaw] = power * direction;
+	motor[RClaw] = power * direction;
 }
