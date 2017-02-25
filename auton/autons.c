@@ -1,56 +1,26 @@
 int k = 0;
 
-void supportAuton() {
-	/* deploy */
-	move(900, FORWARD);
-	startTask(deploya);
-	autonLiftUp(1500);
+void block() {
+	move(900, BACKWARD);
+	startTask(deploy);
+	move(900, BACKWARD);
+	autonLiftUp(2800);
 	startTask(autonHold);
-	move(500, BACKWARD);
-	rotate(90, CLOCKWISE);
-	move(500, BACKWARD);
-	stopTask(deploya);
-	stopTask(autonHold);
-	autonLiftDown(400);
-	startTask(autonHold);
-
-	/* grab stars */
-	move(3000, FORWARD);
-	startTask(velocityCloseClaw);
+	move(1200, BACKWARD);
 	wait1Msec(500);
-	stopTask(autonHold);
-	autonLiftUp(1500);
-	startTask(autonHold);
-	move(3000, BACKWARD);
-
-	/* dump */
-	rotate(90, CLOCKWISE);
-	move(3000, BACKWARD);
-	stopTask(autonHold);
-	stopTask(velocityCloseClaw);
-	startTask(liftLaunch);
-	startTask(openClaw);
-
-	moveDrive(-127, -127);
-	wait1Msec(300);
-	moveDrive(127, 127);
-
-	/* wing push */
-	move(600, FORWARD);
-	brake(FORWARD);
-	wait1Msec(200);
-	move(600, BACKWARD);
+	move(500, FORWARD);
 }
 
 void cubeScore() {
 	/* grab cube */
-	startTask(deploy);
 	move(2000, FORWARD);
 	brake(FORWARD);
 	rotate(90, COUNTERCLOCKWISE);
+	move(500, BACKWARD);
+	startTask(deploya);
 	k = 2;
-	stopTask(deploy);
-	move(3400, FORWARD);
+	stopTask(deploya);
+	move(3900, FORWARD);
 	brake(FORWARD);
 	wait1Msec(300);
 	k = 3;
@@ -87,26 +57,26 @@ void cubeScore1() {
 	/* star grab */
 	stopTask(autonHold);
 	autonLiftDown(400);
-	move(1000, FORWARD);
+	move(2700, FORWARD);
 	brake(FORWARD);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
 	autonLiftUp(1500);
 	startTask(autonHold);
 
-	///* star dump */
-	//move(500, BACKWARD);
-	//startTask(liftLaunch); // starts autonHold task
-	//move(500, BACKWARD);
-	//stopTask(velocityCloseClaw);
-	//startTask(openClaw);
-	//moveDrive(-127, -127);
-	//wait1Msec(300);
-	//moveDrive(0, 0);
+	/* star dump */
+	move(2000, BACKWARD);
+	startTask(liftLaunch); // starts autonHold task
+	move(600, BACKWARD);
+	stopTask(velocityCloseClaw);
+	startTask(openClaw);
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(0, 0);
 
-	//// move forward
-	//move(300, FORWARD);
-	//stopTask(autonHold);
+	// move forward
+	move(300, FORWARD);
+	stopTask(autonHold);
 }
 
 void support() {

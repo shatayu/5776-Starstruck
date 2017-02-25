@@ -79,10 +79,6 @@ task usercontrol() {
 			moveClaw(0, OPEN);
 		}
 
-		// velocity close
-		if (vexRT[Btn8L])
-			startTask(velocityCloseClaw);
-
 		wait1Msec(20);
 	}
 }

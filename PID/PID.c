@@ -45,10 +45,10 @@ task lift() {
 		if (vexRT[Btn6U]) {
 			moveLift(127);
 			buff = true;
-			} else if (vexRT[Btn6D]) {
+		} else if (vexRT[Btn6D]) {
 			moveLift(-127);
 			buff = true;
-			} else {
+		} else {
 			if (buff) {
 				liftHoldPID.set = SensorValue[LiftPot];
 			}
@@ -58,7 +58,7 @@ task lift() {
 			if(SensorValue[LiftPot] > 900 && PIDToggle){
 				liftHoldPID.cur = SensorValue[LiftPot];
 				calcPID(liftHoldPID);
-				}else{
+			}else{
 				liftHoldPID.power = 0;
 				liftHoldPID.integral = 0;
 			}
