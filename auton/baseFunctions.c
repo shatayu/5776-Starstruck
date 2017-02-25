@@ -3,12 +3,16 @@ Calibrates gyroscope in pre-auton. Includes button interrupt in case robot resta
 */
 void calibrate() {
 	// remove gyro from port
-	 SensorType[in2] = sensorNone;
+	SensorType[in5] = sensorNone;
 
-	 // interruptable wait
+	wait1Msec(1000);
+	SensorType[in5] = sensorGyro;
+	wait1Msec(2000);
+
+	 /* interruptable wait
 	 for (int i = 0; i < 25; i++) {
 	   if (vexRT[Btn8R])
-	     return;
+	   //  return;
 
 	   wait1Msec(20);
 	 }
@@ -17,10 +21,11 @@ void calibrate() {
 	 SensorType[in2] = sensorGyro;
 	 for (int i = 0; i < 100; i++) {
 	   if (vexRT[Btn8R])
-	     return;
+	   //  return;
 
 	   wait1Msec(20);
-	 }
+	 }*/
+
 }
 
 /*

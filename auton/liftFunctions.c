@@ -35,7 +35,7 @@ void autonLiftDown (int angle) {
 Deploys claw.
 */
 task deploy() {
-
+	stopTask(deploy);
 }
 
 /*

@@ -39,6 +39,6 @@ task openClaw() {
 		moveClaw(127, OPEN);
 		wait1Msec(20);
 	}
-	moveClaw(0, OPEN)
+	moveClaw(0, OPEN);
 	stopTask(openClaw);
 }

@@ -37,16 +37,16 @@ task lift() {
 
 	//2770 parallel
 	while (true) {
-		if (c.PIDOff)
+		if (vexRT[Btn6D])
 			PIDToggle = false;
-		if (c.PIDOn)
+		if (vexRT[Btn6U])
 			PIDToggle = true;
 
-		if (c.liftUp) {
+		if (vexRT[Btn6U]) {
 			moveLift(127);
 			buff = true;
-			} else if (c.liftDown) {
-			moveLift(127);
+			} else if (vexRT[Btn6D]) {
+			moveLift(-127);
 			buff = true;
 			} else {
 			if (buff) {

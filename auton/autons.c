@@ -1,48 +1,54 @@
 void cubeScore() {
-	/* move forward to grab cube */
+	/* grab cube */
 	//startTask(deploy);
-	//wait1Msec(0); // TUNE TIME TO ACCOUNT FOR DEPLOY
-	move(3300, FORWARD);
+	move(1000, FORWARD);
 	brake(FORWARD);
-	//stopTask(deploy);
+	rotate(90, COUNTERCLOCKWISE);
+	move(1000, FORWARD);
+	brake(FORWARD);
+	stopTask(deploy);
+	startTask(velocityCloseClaw);
 
-	/* grab stars */
+	/* dump cube */
+	autonLiftUp(1800);
+	startTask(autonHold);
+	rotate(90, COUNTERCLOCKWISE);
+	move(500, BACKWARD);
+	stopTask(velocityCloseClaw);
+	stopTask(autonHold);
+	startTask(liftLaunch); // starts autonHold after usage
+	move(500, BACKWARD);
+	startTask(openClaw);
+
+	// fence ram
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(0, 0);
+
+	/* wing push */
+	move(200, FORWARD);
+	wait1Msec(100);
+	move(200, BACKWARD);
+
+	/* star grab */
+	stopTask(autonHold);
+	autonLiftDown(750);
+	move(1000, FORWARD);
+	brake(FORWARD);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
-	autonLiftUp(1100);
-	startTask(autonHold);
 
-	move(3300, BACKWARD);
-	brake(BACKWARD);
-	encoderRotate(1150, CLOCKWISE);
-
-	/* dump stars */
-	move(5100, BACKWARD);
-	stopTask(autonHold);
+	/* star dump */
+	move(500, BACKWARD);
+	startTask(liftLaunch); // starts autonHold task
+	move(500, BACKWARD);
 	stopTask(velocityCloseClaw);
-	startTask(liftLaunch);
-	move(300, BACKWARD);
 	startTask(openClaw);
 	moveDrive(-127, -127);
-	wait1Msec(1000);
+	wait1Msec(300);
 	moveDrive(0, 0);
-	stopTask(openClaw);
-	stopTask(liftLaunch);
-	//autonLiftDown(1250);
 
-	/* get cube */
-	//rotate(70, COUNTERCLOCKWISE);
-	//move(1000, FORWARD);
-	//brake(FORWARD);
-	//startTask(velocityCloseClaw);
-	//wait1Msec(500);
-	//autonLiftUp(1800);
-	//rotate(70, CLOCKWISE);
-
-	///* dump cube */
-	//move(200, BACKWARD);
-	//startTask(liftLaunch);
-	//move(300, BACKWARD);
-	//startTask(openClaw);
-	//move(100, FORWARD);
+	// move forward
+	move(300, FORWARD);
+	stopTask(autonHold);
 }

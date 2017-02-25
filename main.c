@@ -1,8 +1,9 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in2,    Gyro,           sensorGyro)
+#pragma config(Sensor, in2,    ,               sensorAnalog)
 #pragma config(Sensor, in3,    ClawPot,        sensorPotentiometer)
 #pragma config(Sensor, in4,    LiftPot,        sensorPotentiometer)
+#pragma config(Sensor, in5,    Gyro,           sensorGyro)
 #pragma config(Sensor, in6,    Selector,       sensorPotentiometer)
 #pragma config(Sensor, in7,    PowerExpander,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  ClawSolenoid,   sensorDigitalOut)
@@ -33,7 +34,7 @@ int v;
 
 #include "drive/drive.h"
 #include "drive/toggle.h"
-#include "drive/controls.c"
+//#include "drive/controls.c"
 #include "drive/functions.c"
 
 #include "PID/PID.h"
@@ -46,8 +47,8 @@ int v;
 #include "auton/autons.c"
 
 void pre_auton() {
-	//calibrate();
-	SensorType[in2] = sensorGyro;
+	calibrate();
+	//SensorType[in2] = sensorGyro;
 }
 
 task autonomous() {
@@ -70,37 +71,32 @@ task autonomous() {
 }
 
 task usercontrol() {
-	startTask(controls);
-	//startTask(lift);
+	//startTask(controls);
+	startTask(lift);
 
 	while (true) {
+		SensorType[in2] = sensorGyro;
 		// arcade drive
-		moveDrive(c.LDrive, c.RDrive);
+		//moveDrive(c.LDrive, c.RDrive);
+		moveDrive(vexRT[Ch3], vexRT[Ch2]);
 
 		// claw control
-		if (c.liftDown && c.liftUp) {
+		if (vexRT[Btn5U] && vexRT[Btn5D]) {
 			stopTask(velocityCloseClaw);
 			moveClaw(30, CLOSED); // stall torque
-		} else if (c.liftUp) {
+		} else if (vexRT[Btn5U]) {
 			stopTask(velocityCloseClaw);
 			moveClaw(127, OPEN); // open
-		} else if (c.liftDown) {
+		} else if (vexRT[Btn5D]) {
 			stopTask(velocityCloseClaw);
 			moveClaw(127, CLOSED); // close
 		} else {
 			moveClaw(0, OPEN);
 		}
 
-		// lift control
-		if (c.clawOpen) {
-			moveLift(127);
-		} else if (c.clawClosed) {
-			moveLift(-127);
-		} else {
-			moveLift(0);
-		}
 
-		if (vexRT[Btn8U])
+
+		if (vexRT[Btn8L])
 			startTask(velocityCloseClaw);
 
 		wait1Msec(20);
