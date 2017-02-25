@@ -1,12 +1,25 @@
 int k = 0;
 
 void supportAuton() {
+	/* deploy */
+	move(900, FORWARD);
+	startTask(deploya);
+	autonLiftUp(1500);
+	startTask(autonHold);
+	move(500, BACKWARD);
+	rotate(90, CLOCKWISE);
+	move(500, BACKWARD);
+	stopTask(deploya);
+	stopTask(autonHold);
+	autonLiftDown(400);
+	startTask(autonHold);
+
 	/* grab stars */
-	startTask(deploy);
 	move(3000, FORWARD);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
-	autonLiftUp(2000);
+	stopTask(autonHold);
+	autonLiftUp(1500);
 	startTask(autonHold);
 	move(3000, BACKWARD);
 
@@ -14,9 +27,19 @@ void supportAuton() {
 	rotate(90, CLOCKWISE);
 	move(3000, BACKWARD);
 	stopTask(autonHold);
+	stopTask(velocityCloseClaw);
 	startTask(liftLaunch);
-	wait1Msec(500);
 	startTask(openClaw);
+
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(127, 127);
+
+	/* wing push */
+	move(600, FORWARD);
+	brake(FORWARD);
+	wait1Msec(200);
+	move(600, BACKWARD);
 }
 
 void cubeScore() {
@@ -54,20 +77,22 @@ void cubeScore1() {
 	wait1Msec(300);
 	moveDrive(0, 0);
 
-	///* wing push */
-	//move(200, FORWARD);
-	//wait1Msec(100);
-	//move(200, BACKWARD);
+	autonLiftDown(2500);
 
-	///* star grab */
-	//stopTask(autonHold);
-	//autonLiftDown(750);
-	//move(1000, FORWARD);
-	//brake(FORWARD);
-	//startTask(velocityCloseClaw);
-	//wait1Msec(500);
-	//autonLiftUp(1500);
-	//startTask(autonHold);
+	/* wing push */
+	move(500, FORWARD);
+	wait1Msec(100);
+	move(500, BACKWARD);
+
+	/* star grab */
+	stopTask(autonHold);
+	autonLiftDown(400);
+	move(1000, FORWARD);
+	brake(FORWARD);
+	startTask(velocityCloseClaw);
+	wait1Msec(500);
+	autonLiftUp(1500);
+	startTask(autonHold);
 
 	///* star dump */
 	//move(500, BACKWARD);
@@ -87,7 +112,7 @@ void cubeScore1() {
 void support() {
 	/* star grab */
 	startTask(deploy);
-	wait1Msec(0); // tune for deploy
+	wait1Msec(500); // tune for deploy
 	move(1000, FORWARD);
 	brake(FORWARD);
 	stopTask(deploy);

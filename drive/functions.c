@@ -32,3 +32,15 @@ void moveClaw (int power, int direction) {
 	motor[LClaw] = power * direction;
 	motor[RClaw] = power * direction;
 }
+
+/*
+Deploys claw.
+*/
+task deploy() {
+	while (SensorValue[ClawPot] > 700) {
+		moveClaw(127, CLOSED);
+		wait1Msec(20);
+	}
+	moveClaw(0, OPEN);
+	stopTask(deploy);
+}

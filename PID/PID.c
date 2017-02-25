@@ -37,9 +37,9 @@ task lift() {
 
 	//2770 parallel
 	while (true) {
-		if (vexRT[Btn6D])
+		if (vexRT[Btn8D])
 			PIDToggle = false;
-		if (vexRT[Btn6U])
+		if (vexRT[Btn8U])
 			PIDToggle = true;
 
 		if (vexRT[Btn6U]) {

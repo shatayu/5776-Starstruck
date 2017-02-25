@@ -5,7 +5,7 @@ Moves lift up until it reaches a specific angle.
 */
 void autonLiftUp (int angle) {
 	while (SensorValue[LiftPot] < angle) {
-		moveLift(127);
+		moveLift(70);
 		wait1Msec(20);
 	}
 	moveLift(0);
@@ -40,24 +40,12 @@ void autonLiftDown (int angle) {
 }
 
 /*
-Deploys claw.
-*/
-task deploy() {
-	while (SensorValue[ClawPot] > 1000) {
-		moveClaw(127, CLOSED);
-		wait1Msec(20);
-	}
-	moveClaw(0, OPEN);
-	stopTask(deploy);
-}
-
-/*
 Lifts lift to height appropriate for dumping objects over the side (high) fences.
 Made a task to be able to lift for dump while moving.
 */
 task liftLaunch() {
-	while (SensorValue[LiftPot] < 3000) {
-		moveLift(127);
+	while (SensorValue[LiftPot] < 2700) {
+		moveLift(70);
 		wait1Msec(20);
 	}
 	moveLift(0);

@@ -52,7 +52,8 @@ void pre_auton() {
 }
 
 task autonomous() {
-	supportAuton();
+cubeScore();
+cubeScore1();
 }
 
 task usercontrol() {

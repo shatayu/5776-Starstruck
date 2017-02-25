@@ -1,3 +1,11 @@
+task deploya() {
+	while (SensorValue[ClawPot] > 800) {
+		moveClaw(127, CLOSED);
+		wait1Msec(20);
+	}
+	stopTask(deploya);
+}
+
 float getVelocity() {
 	int a = SensorValue[ClawPot];
 	wait1Msec(20);

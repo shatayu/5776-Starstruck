@@ -18,6 +18,5 @@ task halfOpenClaw();
 task openClaw();
 task liftLaunch();
 
-task deploy();
 
 //void backFenceLeft();
