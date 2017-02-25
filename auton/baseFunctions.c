@@ -43,6 +43,7 @@ Basic function to move straight in auton. Includes deceleration curve.
 @param direction: FORWARD/BACKWARD, the direction in which to move.
 @param speed: the amount of power to apply to each motor (optional, default 100).
 */
+
 void move (int ticks, int direction, int speed) {
 	int BRAKE_SPEED = 50;
 	int BRAKE_TIME = 40;
@@ -92,7 +93,7 @@ void rotate (float degrees, int direction, int speed) {
 
 	// decelerate down to 30% of original speed
 	while (abs(SensorValue[Gyro]) < degrees * 10) {
-		moveDrive((0.3 * direction * speed), (0.3 * -direction * speed));
+		moveDrive((0.6 * direction * speed), (0.6 * -direction * speed));
 		wait1Msec(20);
 	}
 

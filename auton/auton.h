@@ -8,7 +8,7 @@ void calibrate();
 void zeroEncoders();
 void move (int ticks, int direction, int speed = 100);
 void rotate (float degrees, int direction, int speed = 80);
-void brake(int direction);
+void brake (int direction);
 void autonLiftUp (int angle);
 void autonLiftDown (int angle);
 

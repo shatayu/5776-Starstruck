@@ -52,22 +52,7 @@ void pre_auton() {
 }
 
 task autonomous() {
-	cubeScore();
-//startTask(liftLaunch);
-
-	//encoderRotate(1400, CLOCKWISE);
-	//startTask(velocityCloseClaw);
-	//wait1Msec(500);
-	//autonLiftUp(2500);
-	//startTask(autonHold);
-	//cubeScore();
-	//wait1Msec(2000);
-	//stopTask(velocityCloseClaw);
-	//startTask(openClaw);
-	//wait1Msec(2000);
-	//stopTask(openClaw);
- //motor[port6] = 127;
-
+	supportAuton();
 }
 
 task usercontrol() {
@@ -77,8 +62,7 @@ task usercontrol() {
 	while (true) {
 		SensorType[in2] = sensorGyro;
 		// arcade drive
-		//moveDrive(c.LDrive, c.RDrive);
-		moveDrive(vexRT[Ch3], vexRT[Ch2]);
+		moveDrive(vexRT[Ch3] + vexRT[Ch1], 0.8*(vexRT[Ch3] - vexRT[Ch1]));
 
 		// claw control
 		if (vexRT[Btn5U] && vexRT[Btn5D]) {
@@ -94,8 +78,7 @@ task usercontrol() {
 			moveClaw(0, OPEN);
 		}
 
-
-
+		// velocity close
 		if (vexRT[Btn8L])
 			startTask(velocityCloseClaw);
 
