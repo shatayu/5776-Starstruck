@@ -43,13 +43,13 @@ void autonLiftDown (int angle) {
 Lifts lift to height appropriate for dumping objects over the side (high) fences.
 Made a task to be able to lift for dump while moving.
 */
-task liftLaunch() {
-	while (SensorValue[LiftPot] < 2000) {
+task launch() {
+	while (SensorValue[LiftPot] < 2800) {
 		moveLift(127);
 		wait1Msec(20);
 	}
 	startTask(openClaw);
-	while (SensorValue[LiftPot] < 3800) {
+	while (SensorValue[LiftPot] < 3300) {
 		moveLift(127);
 		wait1Msec(20);
 	}
@@ -71,12 +71,12 @@ void reset() {
 }
 
 // Launches the stars upward. Assume that velocityCloseClaw if running
-task launch() {
+task launcha() {
 	startTask(liftLaunch);
-	while (SensorValue[LiftPot] < 3200) delay(20);
+	while (SensorValue[LiftPot] < 3100) delay(10);
 	stopTask(velocityCloseClaw);
 	startTask(openClaw);
-	while (!isOpen()) delay(20);
+	while (!isOpen()) delay(10);
 	stopTask(openClaw);
 	moveClaw(0, OPEN);
 

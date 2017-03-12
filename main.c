@@ -60,6 +60,8 @@ task autonomous() {
 	//for (int i = 0; i < 3; i++) preloadRun();
 	centerStars();
 	centerCube();
+	rightCube();
+//move(1000, FORWARD, 70);
 }
 
 

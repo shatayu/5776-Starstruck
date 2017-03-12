@@ -21,7 +21,7 @@ void starL () {
 	brake(BACKWARD);
 
 	// rotate, correct
-	rotate(90, CLOCKWISE);
+	rotate(88, CLOCKWISE);
 	//gyroCorrect(90, COUNTERCLOCKWISE);
 
 	// move backwards, dump
@@ -50,7 +50,6 @@ void preloadRun() {
 	brake(BACKWARD);
 	wait1Msec(400);
 	//startTask(launch);
-	//while (SensorValue[LiftPot} < 3200) wait1Msec(20);
 	//wait1Msec(400):
 	stopTask(autonHold):
 	stopTask(velocityCloseClaw);
@@ -59,7 +58,7 @@ void preloadRun() {
 
 void centerStars() {
 	startTask(halfCloseClaw);
-	//rotate(90, COUNTERCLOCKWISE);
+	rotate(88, COUNTERCLOCKWISE);
 	move(2800, FORWARD);
 	brake(FORWARD);
 	stopTask(halfCloseClaw);
@@ -68,12 +67,15 @@ void centerStars() {
 	startTask(autonHold);
 	move(1500, BACKWARD);
 	brake(BACKWARD);
-	rotate(90, CLOCKWISE);
+	rotate(88, CLOCKWISE);
 	stopTask(velocityCloseClaw);
 	stopTask(autonHold);
 	wait1Msec(400);
-	//startTask(liftLaunch); // ADD LAUNCH CODE IN HERE
+	startTask(launch); // ADD LAUNCH CODE IN HERE
 	stopTask(autonHold);
+	startTask(openClaw);
+	delay(1000)
+	stopTask(openClaw);
 	autonLiftDown(1600);
 	wait1Msec(300);
 }
@@ -85,25 +87,18 @@ void centerStars() {
  * End in neutral position in middle
  */
  void centerCube() {
-	 startTask(openClaw);
-	 delay(1000)
-	 move(400, FORWARD);
-	 stopTask(openClaw);
 	 startTask(velocityCloseClaw);
 	 waitUntilClose();
+	 delay(500);
+	 stopTask(autonHold);
 	 autonLiftUp(2600);
 	 startTask(autonHold):
-	 move(400, BACKWARD);
-<<<<<<< HEAD
+	 move(500, FORWARD);
+	 move(900, BACKWARD);
 	 stopTask(autonHold);
-=======
-<<<<<<< HEAD
-	 launch();
-
-=======
->>>>>>> 53841798b289bcb564c00b6e460bb2c86c74ef50
+	 stopTask(velocityCloseClaw);
 	 startTask(launch);
->>>>>>> 04163e40e3358ca75cc184885e4ac731742bac3a
+	 wait1Msec(2000);
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
 	 startTask(autonHold);
 	 reset();
@@ -115,52 +110,40 @@ void centerStars() {
 * Should end at right fence
 */
 void rightCube() {
-	rotate(90, COUNTERCLOCKWISE);
-	move(500, FORWARD);
+	rotate(88, COUNTERCLOCKWISE);
+	autonLiftUp(2600);
+	startTask(autonHold);
+	move(1400, FORWARD);
 	brake(FORWARD);
 
 	// Rotates to face edges
-	rotate(90, CLOCKWISE);
-	//gyroCorrect(90, COUNTERCLOCKWISE);
-	startTask(openClaw);
-	move(1000, FORWARD);
-	stopTask(openClaw);
-
-
-	// Pick up the star first
-	startTask(velocityCloseClaw);
-	while (isOpen()) delay(20);
-	autonLiftUp(1000);
-
-	// Move backwards and rotate towards the cube
-	move(500, BACKWARD);
-	rotate(45, CLOCKWISE);
-	gyroCorrect(45, COUNTERCLOCKWISE);
-
-	// Obtain cube by first opening and stopping the auton lift
+	rotate(88, CLOCKWISE);
 	stopTask(autonHold);
-	autonLiftDown(500);
-	stopTask(velocityCloseClaw);
-	stopTask(autonHold);
+	autonLiftDown(1600);
 	startTask(openClaw);
-	move(750, FORWARD);
+	delay(400);
 	while (!isOpen()) delay(20);
+	stopTask(openClaw);
+	moveClaw(0, CLOSED);
+	move(800, FORWARD);
+	brake(FORWARD);
 
 
+	// Pick up the cube
 	startTask(velocityCloseClaw);
 	while (isOpen()) delay(20);
-
-	// Move backward a bit and realign with fence to dump
-	move(30, BACKWARD);
-	brake(BACKWARD);
+	delay(150);
+	move(200, BACKWARD);
+	autonLiftUp(2600);
+	startTask(autonHold);
 
 	// Move toward fence
-	move(500, BACKWARD);
+	move(850, BACKWARD);
+	stopTask(autonHold);
+	startTask(launch);
+	move(150, BACKWARD);
 	brake(BACKWARD);
-	rotate(45, COUNTERCLOCKWISE);
-	gyroCorrect(45, CLOCKWISE);
 
 	// dump
-	startTask(launch);
 	reset();
 }

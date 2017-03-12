@@ -44,7 +44,8 @@ Basic function to move straight in auton. Includes deceleration curve.
 @param speed: the amount of power to apply to each motor (optional, default 100).
 */
 
-void move (int ticks, int direction, int speed) {
+void move (int ticks, int direction, int lspeed) {
+	int speed = 80;
 	int BRAKE_SPEED = 50;
 	int BRAKE_TIME = 40;
 
@@ -53,7 +54,7 @@ void move (int ticks, int direction, int speed) {
 	int left = abs(SensorValue[LQuad]);
 	int right = abs(SensorValue[RQuad]);
 
-	moveDrive(direction * speed, direction * speed);
+	moveDrive(direction * lspeed, direction * speed);
 
 	while ((left < 0.7 * ticks) && (right < 0.7 * ticks)) {
 		left = abs(SensorValue[LQuad]);
@@ -107,20 +108,16 @@ void rotate (float degrees, int direction, int speed) {
 void gyroCorrect(int intended, int direction, int speed = 10) {
 	intended *= 10;
 	if (direction == CLOCKWISE) {
-		while (abs(abs(SensorValue[Gyro]) - intended) > 0) {
+		int g = abs(SensorValue[Gyro]);
+		while (abs(g - intended) > 0) {
 			moveDrive(speed, -speed);
-			
-			// This is a critical area. Minimize down time.
-			wait1Msec(5);
 		}
 		moveDrive(0, 0);
 
 	} else {
-		while (abs(abs(SensorValue[Gyro]) - intended) > 0) {
+		int g = abs(SensorValue[Gyro]);
+		while (abs(g - intended) > 0) {
 			moveDrive(-speed, speed);
-
-			// This is a critical area. Minimize down time.
-			wait1Msec(5);
 		}
 		moveDrive(0, 0);
 	}
