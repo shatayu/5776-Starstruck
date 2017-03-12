@@ -104,21 +104,20 @@ void rotate (float degrees, int direction, int speed) {
 	moveDrive(0, 0);
 }
 
-void encoderRotate (int ticks, int direction) {
-	zeroEncoders();
-	while (abs(SensorValue[RQuad]) < 0.8 * ticks && abs(SensorValue[LQuad]) < 0.8 * ticks) {
-		moveDrive(127 * direction, -127 * direction);
-		wait1Msec(20);
+void gyroCorrect(int intended, int direction, int speed = 50) {
+	if (direction == CLOCKWISE) {
+		while (abs(SensorValue[Gyro] - intended) > 0)) {
+			motor[LDrive] = speed;
+			motor[RDrive] = -speed;
+			wait1Msec(20);
+		}
+	} else {
+		while (abs(SensorValue[Gyro] - intended) > 0)) {
+			motor[LDrive] = -speed;
+			motor[RDrive] = speed;
+			wait1Msec(20);
+		}
 	}
-
-	while (abs(SensorValue[RQuad]) < ticks && abs(SensorValue[LQuad]) < ticks) {
-		moveDrive(70 * direction, -70 * direction);
-		wait1Msec(20);
-	}
-
-	moveDrive(-30 * direction, 30 * direction);
-	wait1Msec(50);
-	moveDrive(0, 0);
 }
 
 void brake(int direction) {
