@@ -1,3 +1,6 @@
+#define CLAW_OPEN_STATE 1300
+#define CLAW_CLOSE_STATE 800
+
 task deploya() {
 	while (SensorValue[ClawPot] > 800) {
 		moveClaw(127, CLOSED);
@@ -54,4 +57,12 @@ task openClaw() {
 	}
 	moveClaw(0, OPEN);
 	stopTask(openClaw);
+}
+
+bool isOpen() {
+	return SensorValue[ClawPot] > CLAW_OPEN_STATE;
+}
+
+void waitUntilClose() {
+	while (isOpen()) delay(20);
 }

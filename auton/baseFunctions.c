@@ -106,13 +106,13 @@ void rotate (float degrees, int direction, int speed) {
 
 void gyroCorrect(int intended, int direction, int speed = 50) {
 	if (direction == CLOCKWISE) {
-		while (abs(SensorValue[Gyro] - intended) > 0)) {
+		while (abs(SensorValue[Gyro] - intended) > 0) {
 			motor[LDrive] = speed;
 			motor[RDrive] = -speed;
 			wait1Msec(20);
 		}
 	} else {
-		while (abs(SensorValue[Gyro] - intended) > 0)) {
+		while (abs(SensorValue[Gyro] - intended) > 0) {
 			motor[LDrive] = -speed;
 			motor[RDrive] = speed;
 			wait1Msec(20);
