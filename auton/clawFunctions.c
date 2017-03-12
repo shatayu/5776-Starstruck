@@ -76,3 +76,16 @@ bool isOpen() {
 void waitUntilClose() {
 	while (isOpen()) delay(20);
 }
+
+
+void closeClaw() {
+	startTask(velocityCloseClaw);
+	int currentSpeed = SensorValue[ClawPot];
+	delay(20);
+	currentSpeed -= SensorValue[ClawPot];
+	while (abs(currentSpeed) < 10) {
+		current = SensorValue[ClawPot];
+		delay(20);
+		currentSpeed -= SensorValue[ClawPot];
+	}
+}
