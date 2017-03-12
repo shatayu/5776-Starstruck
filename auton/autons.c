@@ -94,8 +94,16 @@ void centerStars() {
 	 autonLiftUp(2600);
 	 startTask(autonHold):
 	 move(400, BACKWARD);
+<<<<<<< HEAD
 	 stopTask(autonHold);
+=======
+<<<<<<< HEAD
+	 launch();
+
+=======
+>>>>>>> 53841798b289bcb564c00b6e460bb2c86c74ef50
 	 startTask(launch);
+>>>>>>> 04163e40e3358ca75cc184885e4ac731742bac3a
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
 	 startTask(autonHold);
 	 reset();
@@ -154,4 +162,5 @@ void rightCube() {
 
 	// dump
 	startTask(launch);
+	reset();
 }

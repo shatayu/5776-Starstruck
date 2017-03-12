@@ -1,4 +1,4 @@
-#define CLAW_OPEN_STATE 1300
+#define CLAW_OPEN_STATE 2000
 #define CLAW_CLOSE_STATE 800
 
 task deploya() {

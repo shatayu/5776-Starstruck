@@ -76,7 +76,7 @@ task launch() {
 	while (SensorValue[LiftPot] < 3200) delay(20);
 	stopTask(velocityCloseClaw);
 	startTask(openClaw);
-	while (SensorValue[LiftPot] < 3900 && !isOpen()) delay(20);
+	while (!isOpen()) delay(20);
 	stopTask(openClaw);
 	moveClaw(0, OPEN);
 
