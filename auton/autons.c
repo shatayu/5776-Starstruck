@@ -86,13 +86,7 @@ void centerStars() {
 	 startTask(velocityCloseClaw);
 	 waitUntilClose();
 	 move(400, BACKWARD);
-	 startTask(liftLaunch);
-	 while (SensorValue[LiftPot] < 1600) delay(20);
-	 stopTask(velocityCloseClaw);
-	 startTask(openClaw);
-	 while (!isOpen()) delay(20);
-	 stopTask(openClaw);
-
+	 launch();
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
 	 resetLift();
  }
@@ -149,11 +143,5 @@ void rightCube() {
 	gyroCorrect(45, CLOCKWISE);
 
 	// dump
-	startTask(liftLaunch);
-	while (SensorValue[LiftPot] < 500) delay(20);
-	stopTask(velocityCloseClaw);
-	startTask(openClaw)
-	while (isOpen()) delay(20);
-	stopTask(openClaw);
-	stopTask(liftLaunch);
+	launch();
 }
