@@ -10,14 +10,14 @@ void starL () {
 	// deploy
 	startTask(halfOpenClaw);
 
-	move(1000, FORWARD); // grab 3 center back stars
+	move(1200, FORWARD); // grab 3 center back stars
 	brake(FORWARD);
 	stopTask(halfOpenClaw);
 	startTask(velocityCloseClaw);
-	while (SensorValue[ClawPot] > 420) wait1Msec(20); // wait
+	while (SensorValue[ClawPot] > 1300) wait1Msec(20); // wait
 	autonLiftUp(1500);
 	startTask(autonHold);
-	move(1000, BACKWARD);
+	move(1200, BACKWARD);
 	brake(BACKWARD);
 
 	// rotate, correct
@@ -25,35 +25,30 @@ void starL () {
 	gyroCorrect(90, COUNTERCLOCKWISE);
 
 	// move backwards, dump
-	move(500, BACKWARD);
-	stopTask(autonHold);
-	startTask(liftLaunch); // starts autonHold
-	move(300, BACKWARD);
-	stopTask(velocityCloseClaw);
-	startTask(openClaw);
-	stopTask(autonHold);
-	autonLiftDown(750); // down
-	stopTask(openClaw);
+	move(1300, BACKWARD);
+	brake(BACKWARD);
+	startTask(launch);
+	while (SensorValue[LiftPot} < 3200) wait1Msec(20);
+	wait1Msec(400):
+	stopTask(autonHold):
+	autonLiftDown(1600);
 }
 
 void preloadRun() {
-	move(1000, FORWARD);
+	move(1200, FORWARD);
 	brake(FORWARD);
 	wait1Msec(500);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
 
-	move(500, BACKWARD);
-	stopTask(autonHold);
-	startTask(liftLaunch); // starts autonHold
-	move(300, BACKWARD);
-	stopTask(velocityCloseClaw);
-	startTask(openClaw);
-	stopTask(autonHold);
-	autonLiftDown(750); // down
-	stopTask(openClaw);
-	move(300, FORWARD);
-	brake(FORWARD);
+	// move backwards, dump
+	move(1300, BACKWARD);
+	brake(BACKWARD);
+	startTask(launch);
+	while (SensorValue[LiftPot} < 3200) wait1Msec(20);
+	wait1Msec(400):
+	stopTask(autonHold):
+	autonLiftDown(1600);
 
 }
 
@@ -86,7 +81,7 @@ void centerStars() {
 	 startTask(velocityCloseClaw);
 	 waitUntilClose();
 	 move(400, BACKWARD);
-	 launch();
+	 startTask(launch);
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
 	 resetLift();
  }
@@ -118,9 +113,9 @@ void rightCube() {
 	move(500, BACKWARD);
 	rotate(45, CLOCKWISE);
 	gyroCorrect(45, COUNTERCLOCKWISE);
-	
+
 	// Obtain cube by first opening and stopping the auton lift
-	stopTask(autonTask);
+	stopTask(autonHold);
 	autonLiftDown(500);
 	stopTask(velocityCloseClaw);
 	stopTask(autonHold);
@@ -143,5 +138,5 @@ void rightCube() {
 	gyroCorrect(45, CLOCKWISE);
 
 	// dump
-	launch();
+	startTask(launch);
 }

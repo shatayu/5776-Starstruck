@@ -20,8 +20,11 @@ float getVelocity() {
 task velocityCloseClaw() {
 		//nSchedulePriority = 10;
 		 //while velocity is above stallVelocity close very quickly - once velocity is below it means that claw has closed on objects
-		float stallVelocity = 10;
-		while (fabs(getVelocity()) > stallVelocity) {
+		moveClaw(127, CLOSED);
+		wait1Msec(200);
+		float stallVelocity = 100;
+		while (abs(getVelocity()) > stallVelocity && SensorValue[ClawPot] > 900) {
+			datalogAddValue(0, abs(getVelocity());
 			moveClaw(127, CLOSED);
 			wait1Msec(20);
 		}
@@ -29,7 +32,7 @@ task velocityCloseClaw() {
 		// apply small amounts of power to keep objects in claw
 		int stallTorque = 30;
 		while (true) {
-			if (SensorValue[ClawPot] < 50) {
+			if (SensorValue[ClawPot] < 900) {
 				moveClaw(0, CLOSED);
 			} else {
 				moveClaw(stallTorque, CLOSED);
