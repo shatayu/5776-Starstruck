@@ -78,6 +78,7 @@ task launch() {
 	startTask(openClaw);
 	while (SensorValue[LiftPot] < 3900 && !isOpen()) delay(20);
 	stopTask(openClaw);
+	moveClaw(0, OPEN);
 
 	stopTask(launch);
 	// Should have launched everything onto the other side at this point

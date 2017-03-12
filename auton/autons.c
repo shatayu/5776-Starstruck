@@ -27,47 +27,55 @@ void starL () {
 	// move backwards, dump
 	move(1300, BACKWARD);
 	brake(BACKWARD);
-	startTask(launch);
-	while (SensorValue[LiftPot} < 3200) wait1Msec(20);
-	wait1Msec(400):
+	wait1Msec(400);
+	stopTask(velocityCloseClaw);
+	//startTask(launch);
+	//while (SensorValue[LiftPot} < 3200) wait1Msec(20);
+	//wait1Msec(400):
 	stopTask(autonHold):
 	autonLiftDown(1600);
 }
 
 void preloadRun() {
-	move(1200, FORWARD);
+	startTask(openClaw);
+	move(800, FORWARD);
 	brake(FORWARD);
-	wait1Msec(500);
+	wait1Msec(1500);
+	stopTask(openClaw);
 	startTask(velocityCloseClaw);
-	wait1Msec(500);
+	wait1Msec(1500);
 
 	// move backwards, dump
-	move(1300, BACKWARD);
+	move(800, BACKWARD);
 	brake(BACKWARD);
-	startTask(launch);
-	while (SensorValue[LiftPot} < 3200) wait1Msec(20);
-	wait1Msec(400):
+	wait1Msec(400);
+	//startTask(launch);
+	//while (SensorValue[LiftPot} < 3200) wait1Msec(20);
+	//wait1Msec(400):
 	stopTask(autonHold):
+	stopTask(velocityCloseClaw);
 	autonLiftDown(1600);
-
 }
 
 void centerStars() {
 	startTask(halfCloseClaw);
-	rotate(90, COUNTERCLOCKWISE);
-	gyroCorrect(90, CLOCKWISE);
-	move(3000, FORWARD);
+	//rotate(90, COUNTERCLOCKWISE);
+	move(2800, FORWARD);
 	brake(FORWARD);
 	stopTask(halfCloseClaw);
 	startTask(velocityCloseClaw);
-	autonLiftUp(1500);
+	autonLiftUp(2600);
 	startTask(autonHold);
 	move(1500, BACKWARD);
 	brake(BACKWARD);
-	rotate(90, COUNTERCLOCKWISE);
-	startTask(liftLaunch); // starts autonHold
+	rotate(90, CLOCKWISE);
+	stopTask(velocityCloseClaw);
+	stopTask(autonHold);
+	wait1Msec(400);
+	//startTask(liftLaunch); // ADD LAUNCH CODE IN HERE
+	stopTask(autonHold);
+	autonLiftDown(1600);
 	wait1Msec(300);
-	startTask(openClaw);
 }
 
 
@@ -78,14 +86,18 @@ void centerStars() {
  */
  void centerCube() {
 	 startTask(openClaw);
-	 delay(200)
-	 stopTask(openClaw);
+	 delay(1000)
 	 move(400, FORWARD);
+	 stopTask(openClaw);
 	 startTask(velocityCloseClaw);
 	 waitUntilClose();
+	 autonLiftUp(2600);
+	 startTask(autonHold):
 	 move(400, BACKWARD);
+	 stopTask(autonHold);
 	 startTask(launch);
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
+	 startTask(autonHold);
 	 reset();
  }
 
@@ -101,7 +113,7 @@ void rightCube() {
 
 	// Rotates to face edges
 	rotate(90, CLOCKWISE);
-	gyroCorrect(90, COUNTERCLOCKWISE);
+	//gyroCorrect(90, COUNTERCLOCKWISE);
 	startTask(openClaw);
 	move(1000, FORWARD);
 	stopTask(openClaw);
