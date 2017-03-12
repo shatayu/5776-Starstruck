@@ -77,13 +77,16 @@ void centerStars() {
  * End in neutral position in middle
  */
  void centerCube() {
+	 startTask(openClaw);
+	 delay(200)
+	 stopTask(openClaw);
 	 move(400, FORWARD);
 	 startTask(velocityCloseClaw);
 	 waitUntilClose();
 	 move(400, BACKWARD);
 	 startTask(launch);
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
-	 resetLift();
+	 reset();
  }
 
 /**
