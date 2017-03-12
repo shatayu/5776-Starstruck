@@ -1,0 +1,3 @@
+void deploy() {
+    startTask(deploya);
+}
