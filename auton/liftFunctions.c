@@ -49,7 +49,7 @@ task liftLaunch() {
 		wait1Msec(20);
 	}
 	startTask(openClaw);
-	while (SensorValue[LiftPot] < 2700) {
+	while (SensorValue[LiftPot] < 3800) {
 		moveLift(127);
 		wait1Msec(20);
 	}
@@ -71,13 +71,14 @@ void reset() {
 }
 
 // Launches the stars upward. Assume that velocityCloseClaw if running
-void launch() {
+task launch() {
 	startTask(liftLaunch);
-	while (SensorValue[LiftPot] < 3100) delay(20);
+	while (SensorValue[LiftPot] < 3200) delay(20);
 	stopTask(velocityCloseClaw);
 	startTask(openClaw);
 	while (!isOpen()) delay(20);
 	stopTask(openClaw);
 
+	stopTask(launch);
 	// Should have launched everything onto the other side at this point
 }
