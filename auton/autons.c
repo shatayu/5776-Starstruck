@@ -15,14 +15,14 @@ void starL () {
 	stopTask(halfOpenClaw);
 	startTask(velocityCloseClaw);
 	while (SensorValue[ClawPot] > 1300) wait1Msec(20); // wait
-	autonLiftUp(1500);
+	autonLiftUp(2800);
 	startTask(autonHold);
 	move(1200, BACKWARD);
 	brake(BACKWARD);
 
 	// rotate, correct
 	rotate(90, CLOCKWISE);
-	gyroCorrect(90, COUNTERCLOCKWISE);
+	//gyroCorrect(90, COUNTERCLOCKWISE);
 
 	// move backwards, dump
 	move(1300, BACKWARD);

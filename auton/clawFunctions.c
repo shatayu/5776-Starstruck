@@ -83,6 +83,7 @@ void waitUntilClose() {
 
 void closeClaw() {
 	startTask(velocityCloseClaw);
+	int current;
 	int currentSpeed = SensorValue[ClawPot];
 	delay(20);
 	currentSpeed -= SensorValue[ClawPot];

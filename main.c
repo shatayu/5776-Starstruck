@@ -51,12 +51,12 @@ void setToggle(Toggle t) {
 }
 
 void pre_auton() {
-	//calibrate();
+	calibrate();
 	//SensorType[in2] = sensorGyro;
 }
 
 task autonomous() {
-	startTask(launch);
+	starL();
 }
 
 
