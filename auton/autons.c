@@ -54,9 +54,23 @@ void preloadRun() {
 	stopTask(openClaw);
 	move(300, FORWARD);
 	brake(FORWARD);
+
 }
 
 void centerStars() {
+	startTask(halfCloseClaw);
 	rotate(90, COUNTERCLOCKWISE);
+	gyroCorrect(90, CLOCKWISE);
 	move(3000, FORWARD);
+	brake(FORWARD);
+	stopTask(halfCloseClaw);
+	startTask(velocityCloseClaw);
+	autonLiftUp(1500);
+	startTask(autonHold);
+	move(1500, BACKWARD);
+	brake(BACKWARD);
+	rotate(90, COUNTERCLOCKWISE);
+	startTask(liftLaunch); // starts autonHold
+	wait1Msec(300);
+	startTask(openClaw);
 }
