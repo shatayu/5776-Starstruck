@@ -44,8 +44,13 @@ Lifts lift to height appropriate for dumping objects over the side (high) fences
 Made a task to be able to lift for dump while moving.
 */
 task liftLaunch() {
+	while (SensorValue[LiftPot] < 2000) {
+		moveLift(127);
+		wait1Msec(20);
+	}
+	startTask(openClaw);
 	while (SensorValue[LiftPot] < 2700) {
-		moveLift(70);
+		moveLift(127);
 		wait1Msec(20);
 	}
 	moveLift(0);
