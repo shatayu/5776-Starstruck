@@ -56,7 +56,10 @@ void pre_auton() {
 }
 
 task autonomous() {
-	starL();
+	//starL();
+	//for (int i = 0; i < 3; i++) preloadRun();
+	centerStars();
+	centerCube();
 }
 
 
@@ -91,6 +94,9 @@ task usercontrol() {
 		}
 		v = getVelocity();
 
+
+		if (vexRT[Btn7R])
+			zeroEncoders();
 		wait1Msec(20);
 	}
 }
