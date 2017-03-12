@@ -61,6 +61,28 @@ void centerStars() {
 	move(3000, FORWARD);
 }
 
+
+/**
+ * Starts in neutral position in the middle against the fence opposing fence
+ * Should dump the middle cube on the other side
+ * End in neutral position in middle
+ */
+ void centerCube() {
+	 move(400, FORWARD);
+	 startTask(velocityCloseClaw);
+	 waitUntilClose();
+	 move(400, BACKWARD);
+	 startTask(liftLaunch);
+	 while (SensorValue[LiftPot] < 1600) delay(20);
+	 stopTask(velocityCloseClaw);
+	 startTask(openClaw);
+	 while (!isOpen()) delay(20);
+	 stopTask(openClaw);
+
+	 // Hopefully have dumped the stuff on other side; move to return to neutral position
+	 resetLift();
+ }
+
 /**
 * Starts in middle at the fence in base position with claw AWAY from fence
 * Target is to get cube and start and dump on far (right) fence
@@ -82,7 +104,6 @@ void rightCube() {
 	// Pick up the star first
 	startTask(velocityCloseClaw);
 	while (isOpen()) delay(20);
-	stopTask(velocityCloseClaw);
 	autonLiftUp(1000);
 
 	// Move backwards and rotate towards the cube
@@ -93,12 +114,15 @@ void rightCube() {
 	// Obtain cube by first opening and stopping the auton lift
 	stopTask(autonTask);
 	autonLiftDown(500);
+	stopTask(velocityCloseClaw);
 	stopTask(autonHold);
+	startTask(openClaw);
 	move(750, FORWARD);
+	while (!isOpen()) delay(20);
+
 
 	startTask(velocityCloseClaw);
 	while (isOpen()) delay(20);
-	stopTask(velocityCloseClaw);
 
 	// Move backward a bit and realign with fence to dump
 	move(30, BACKWARD);
@@ -112,4 +136,10 @@ void rightCube() {
 
 	// dump
 	startTask(liftLaunch);
+	while (SensorValue[LiftPot] < 500) delay(20);
+	stopTask(velocityCloseClaw);
+	startTask(openClaw)
+	while (isOpen()) delay(20);
+	stopTask(openClaw);
+	stopTask(liftLaunch);
 }
