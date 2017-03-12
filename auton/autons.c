@@ -90,6 +90,7 @@ void centerStars() {
 	 waitUntilClose();
 	 move(400, BACKWARD);
 	 launch();
+
 	 // Hopefully have dumped the stuff on other side; move to return to neutral position
 	 reset();
  }
@@ -147,4 +148,6 @@ void rightCube() {
 
 	// dump
 	launch();
+
+	reset();
 }
