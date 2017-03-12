@@ -54,29 +54,29 @@ void cubeScore1() {
 	wait1Msec(100);
 	move(500, BACKWARD);
 
-	/* star grab */
-	stopTask(autonHold);
-	autonLiftDown(400);
-	move(2700, FORWARD);
-	brake(FORWARD);
-	startTask(velocityCloseClaw);
-	wait1Msec(500);
-	autonLiftUp(1500);
-	startTask(autonHold);
+	///* star grab */
+	//stopTask(autonHold);
+	//autonLiftDown(400);
+	//move(2700, FORWARD);
+	//brake(FORWARD);
+	//startTask(velocityCloseClaw);
+	//wait1Msec(500);
+	//autonLiftUp(1500);
+	//startTask(autonHold);
 
-	/* star dump */
-	move(2000, BACKWARD);
-	startTask(liftLaunch); // starts autonHold task
-	move(600, BACKWARD);
-	stopTask(velocityCloseClaw);
-	startTask(openClaw);
-	moveDrive(-127, -127);
-	wait1Msec(300);
-	moveDrive(0, 0);
+	///* star dump */
+	//move(2000, BACKWARD);
+	//startTask(liftLaunch); // starts autonHold task
+	//move(600, BACKWARD);
+	//stopTask(velocityCloseClaw);
+	//startTask(openClaw);
+	//moveDrive(-127, -127);
+	//wait1Msec(300);
+	//moveDrive(0, 0);
 
-	// move forward
-	move(300, FORWARD);
-	stopTask(autonHold);
+	//// move forward
+	//move(300, FORWARD);
+	//stopTask(autonHold);
 }
 
 void support() {

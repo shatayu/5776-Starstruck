@@ -1,4 +1,5 @@
 // calculates PID values at a given point
+
 void calcPID(PID tPID) {
 	int error;
 	int sign;
@@ -25,9 +26,9 @@ PID liftHoldPID;
 /*
 manages lift control, activates PID when lift is not moving up or down and PID is on
 */
+bool PIDToggle = false;
+int debug = 0;
 task lift() {
-	bool PIDToggle = false;
-
 	liftHoldPID.kp = 0.4;
 	liftHoldPID.ki = 0.1;
 	liftHoldPID.dead = 10;
@@ -55,10 +56,12 @@ task lift() {
 
 			buff = false;
 
-			if(SensorValue[LiftPot] > 900 && PIDToggle){
+			if (PIDToggle){
 				liftHoldPID.cur = SensorValue[LiftPot];
+				debug = 1;
 				calcPID(liftHoldPID);
 			}else{
+				debug = 2;
 				liftHoldPID.power = 0;
 				liftHoldPID.integral = 0;
 			}
