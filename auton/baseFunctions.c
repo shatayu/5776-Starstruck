@@ -109,14 +109,18 @@ void gyroCorrect(int intended, int direction, int speed = 10) {
 	if (direction == CLOCKWISE) {
 		while (abs(abs(SensorValue[Gyro]) - intended) > 0) {
 			moveDrive(speed, -speed);
-			wait1Msec(20);
+			
+			// This is a critical area. Minimize down time.
+			wait1Msec(5);
 		}
 		moveDrive(0, 0);
 
 	} else {
 		while (abs(abs(SensorValue[Gyro]) - intended) > 0) {
 			moveDrive(-speed, speed);
-			wait1Msec(20);
+
+			// This is a critical area. Minimize down time.
+			wait1Msec(5);
 		}
 		moveDrive(0, 0);
 	}
