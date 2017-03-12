@@ -49,6 +49,16 @@ task halfOpenClaw() {
 	stopTask(halfOpenClaw);
 }
 
+task halfCloseClaw() {
+	int halfOpenAngle = 420; // ACTUAL CONSTANT
+	while (SensorValue[ClawPot] > halfOpenAngle) {
+		moveClaw(127, CLOSED);
+		wait1Msec(20);
+	}
+	moveClaw(0, OPEN);
+	stopTask(halfOpenClaw);
+}
+
 task openClaw() {
 	int openAngle = 1337; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] < openAngle) {
