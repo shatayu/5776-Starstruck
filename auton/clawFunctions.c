@@ -37,7 +37,7 @@ task velocityCloseClaw() {
 }
 
 task halfOpenClaw() {
-	int halfOpenAngle = 420; // ACTUAL CONSTANT
+	int halfOpenAngle = 1300; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] < halfOpenAngle) {
 		moveClaw(127, OPEN);
 		wait1Msec(20);
@@ -47,7 +47,7 @@ task halfOpenClaw() {
 }
 
 task halfCloseClaw() {
-	int halfOpenAngle = 420; // ACTUAL CONSTANT
+	int halfOpenAngle = 1300; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] > halfOpenAngle) {
 		moveClaw(127, CLOSED);
 		wait1Msec(20);

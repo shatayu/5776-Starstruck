@@ -57,11 +57,14 @@ void pre_auton() {
 
 task autonomous() {
 	rotate(90, CLOCKWISE);
+	wait1Msec(1000);
 	gyroCorrect(90, COUNTERCLOCKWISE);
+	wait1Msec(1000);
+	//gyroCorrect(90, CLOCKWISE);
 }
 
 
-	Toggle clawStall;
+Toggle clawStall;
 task usercontrol() {
 	startTask(lift);
 	setToggle(clawStall);
@@ -81,12 +84,12 @@ task usercontrol() {
 		if (vexRT[Btn5U]) {
 			clawStall.state = 0;
 			moveClaw(127, CLOSED);
-		} else if (vexRT[Btn5D]) {
+			} else if (vexRT[Btn5D]) {
 			clawStall.state = 0;
 			moveClaw(127, OPEN);
-		} else if (clawStall.state > 0) {
+			} else if (clawStall.state > 0) {
 			moveClaw(50, CLOSED);
-		} else {
+			} else {
 			moveClaw(0, CLOSED);
 		}
 
