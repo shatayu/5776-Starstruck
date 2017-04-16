@@ -1,6 +1,3 @@
-#define CLAW_OPEN_STATE 2000
-#define CLAW_CLOSE_STATE 800
-
 task deploya() {
 	while (SensorValue[ClawPot] > 800) {
 		moveClaw(127, CLOSED);
@@ -20,11 +17,8 @@ float getVelocity() {
 task velocityCloseClaw() {
 		//nSchedulePriority = 10;
 		 //while velocity is above stallVelocity close very quickly - once velocity is below it means that claw has closed on objects
-		moveClaw(127, CLOSED);
-		wait1Msec(200);
-		float stallVelocity = 100;
-		while (abs(getVelocity()) > stallVelocity && SensorValue[ClawPot] > 900) {
-			datalogAddValue(0, abs(getVelocity());
+		float stallVelocity = 10;
+		while (fabs(getVelocity()) > stallVelocity) {
 			moveClaw(127, CLOSED);
 			wait1Msec(20);
 		}
@@ -32,7 +26,7 @@ task velocityCloseClaw() {
 		// apply small amounts of power to keep objects in claw
 		int stallTorque = 30;
 		while (true) {
-			if (SensorValue[ClawPot] < 900) {
+			if (SensorValue[ClawPot] < 50) {
 				moveClaw(0, CLOSED);
 			} else {
 				moveClaw(stallTorque, CLOSED);
@@ -43,7 +37,7 @@ task velocityCloseClaw() {
 }
 
 task halfOpenClaw() {
-	int halfOpenAngle = 1300; // ACTUAL CONSTANT
+	int halfOpenAngle = 420; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] < halfOpenAngle) {
 		moveClaw(127, OPEN);
 		wait1Msec(20);
@@ -52,44 +46,12 @@ task halfOpenClaw() {
 	stopTask(halfOpenClaw);
 }
 
-task halfCloseClaw() {
-	int halfOpenAngle = 1400; // ACTUAL CONSTANT
-	while (SensorValue[ClawPot] > halfOpenAngle) {
-		moveClaw(127, CLOSED);
-		wait1Msec(20);
-	}
-	moveClaw(0, OPEN);
-	stopTask(halfOpenClaw);
-}
-
 task openClaw() {
-	int openAngle = 2000; // ACTUAL CONSTANT
+	int openAngle = 1337; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] < openAngle) {
 		moveClaw(127, OPEN);
 		wait1Msec(20);
 	}
 	moveClaw(0, OPEN);
 	stopTask(openClaw);
-}
-
-bool isOpen() {
-	return SensorValue[ClawPot] > CLAW_OPEN_STATE;
-}
-
-void waitUntilClose() {
-	while (isOpen()) delay(20);
-}
-
-
-void closeClaw() {
-	startTask(velocityCloseClaw);
-	int current;
-	int currentSpeed = SensorValue[ClawPot];
-	delay(20);
-	currentSpeed -= SensorValue[ClawPot];
-	while (abs(currentSpeed) < 10) {
-		current = SensorValue[ClawPot];
-		delay(20);
-		currentSpeed -= SensorValue[ClawPot];
-	}
 }

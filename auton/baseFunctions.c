@@ -44,8 +44,7 @@ Basic function to move straight in auton. Includes deceleration curve.
 @param speed: the amount of power to apply to each motor (optional, default 100).
 */
 
-void move (int ticks, int direction, int lspeed) {
-	int speed = 80;
+void move (int ticks, int direction, int speed) {
 	int BRAKE_SPEED = 50;
 	int BRAKE_TIME = 40;
 
@@ -54,7 +53,7 @@ void move (int ticks, int direction, int lspeed) {
 	int left = abs(SensorValue[LQuad]);
 	int right = abs(SensorValue[RQuad]);
 
-	moveDrive(direction * lspeed, direction * speed);
+	moveDrive(direction * speed, direction * speed);
 
 	while ((left < 0.7 * ticks) && (right < 0.7 * ticks)) {
 		left = abs(SensorValue[LQuad]);
@@ -105,22 +104,21 @@ void rotate (float degrees, int direction, int speed) {
 	moveDrive(0, 0);
 }
 
-void gyroCorrect(int intended, int direction, int speed = 10) {
-	intended *= 10;
-	if (direction == CLOCKWISE) {
-		int g = abs(SensorValue[Gyro]);
-		while (abs(g - intended) > 0) {
-			moveDrive(speed, -speed);
-		}
-		moveDrive(0, 0);
-
-	} else {
-		int g = abs(SensorValue[Gyro]);
-		while (abs(g - intended) > 0) {
-			moveDrive(-speed, speed);
-		}
-		moveDrive(0, 0);
+void encoderRotate (int ticks, int direction) {
+	zeroEncoders();
+	while (abs(SensorValue[RQuad]) < 0.8 * ticks && abs(SensorValue[LQuad]) < 0.8 * ticks) {
+		moveDrive(127 * direction, -127 * direction);
+		wait1Msec(20);
 	}
+
+	while (abs(SensorValue[RQuad]) < ticks && abs(SensorValue[LQuad]) < ticks) {
+		moveDrive(70 * direction, -70 * direction);
+		wait1Msec(20);
+	}
+
+	moveDrive(-30 * direction, 30 * direction);
+	wait1Msec(50);
+	moveDrive(0, 0);
 }
 
 void brake(int direction) {

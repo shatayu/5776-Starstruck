@@ -1,149 +1,116 @@
-/*
-- starL to get 3 center back stars (leaves in front of left fence facing backwards)
-- preloadRun 3 times (leaves in front of left fence facing backwards)
-- centerStars gets 3 center front stars and front right star, dumps (leaves in front of center fence facing backwards)
-- centerCube dumps cube (leaves in front of center fence facing backwards)
-- rightCube gets back right star and right cube, dumps over right side fence
-*/
+int k = 0;
 
-void starL () {
-	// deploy
-	startTask(halfOpenClaw);
-
-	move(1200, FORWARD); // grab 3 center back stars
-	brake(FORWARD);
-	stopTask(halfOpenClaw);
-	startTask(velocityCloseClaw);
-	while (SensorValue[ClawPot] > 1300) wait1Msec(20); // wait
+void block() {
+	move(900, BACKWARD);
+	startTask(deploy);
+	move(900, BACKWARD);
 	autonLiftUp(2800);
 	startTask(autonHold);
 	move(1200, BACKWARD);
-	brake(BACKWARD);
-
-	// rotate, correct
-	rotate(88, CLOCKWISE);
-	//gyroCorrect(90, COUNTERCLOCKWISE);
-
-	// move backwards, dump
-	move(1300, BACKWARD);
-	brake(BACKWARD);
-	wait1Msec(400);
-	stopTask(velocityCloseClaw);
-	//startTask(launch);
-	//while (SensorValue[LiftPot} < 3200) wait1Msec(20);
-	//wait1Msec(400):
-	stopTask(autonHold):
-	autonLiftDown(1600);
+	wait1Msec(500);
+	move(500, FORWARD);
 }
 
-void preloadRun() {
-	startTask(openClaw);
-	move(800, FORWARD);
+void cubeScore() {
+	/* grab cube */
+	move(2000, FORWARD);
 	brake(FORWARD);
-	wait1Msec(1500);
-	stopTask(openClaw);
-	startTask(velocityCloseClaw);
-	wait1Msec(1500);
-
-	// move backwards, dump
-	move(800, BACKWARD);
-	brake(BACKWARD);
-	wait1Msec(400);
-	//startTask(launch);
-	//wait1Msec(400):
-	stopTask(autonHold):
-	stopTask(velocityCloseClaw);
-	autonLiftDown(1600);
-}
-
-void centerStars() {
-	startTask(halfCloseClaw);
-	rotate(88, COUNTERCLOCKWISE);
-	move(2800, FORWARD);
+	rotate(90, COUNTERCLOCKWISE);
+	move(500, BACKWARD);
+	startTask(deploya);
+	k = 2;
+	stopTask(deploya);
+	move(3900, FORWARD);
 	brake(FORWARD);
-	stopTask(halfCloseClaw);
-	startTask(velocityCloseClaw);
-	autonLiftUp(2600);
-	startTask(autonHold);
-	move(1500, BACKWARD);
-	brake(BACKWARD);
-	rotate(88, CLOCKWISE);
-	stopTask(velocityCloseClaw);
-	stopTask(autonHold);
-	wait1Msec(400);
-	startTask(launch); // ADD LAUNCH CODE IN HERE
-	stopTask(autonHold);
-	startTask(openClaw);
-	delay(1000)
-	stopTask(openClaw);
-	autonLiftDown(1600);
 	wait1Msec(300);
+	k = 3;
+	return;
 }
 
-
-/**
- * Starts in neutral position in the middle against the fence opposing fence
- * Should dump the middle cube on the other side
- * End in neutral position in middle
- */
- void centerCube() {
-	 startTask(velocityCloseClaw);
-	 waitUntilClose();
-	 delay(500);
-	 stopTask(autonHold);
-	 autonLiftUp(2600);
-	 startTask(autonHold):
-	 move(500, FORWARD);
-	 move(900, BACKWARD);
-	 stopTask(autonHold);
-	 stopTask(velocityCloseClaw);
-	 startTask(launch);
-	 wait1Msec(2000);
-	 // Hopefully have dumped the stuff on other side; move to return to neutral position
-	 startTask(autonHold);
-	 reset();
- }
-
-/**
-* Starts in middle at the fence in base position with claw AWAY from fence
-* Target is to get cube and start and dump on far (right) fence
-* Should end at right fence
-*/
-void rightCube() {
-	rotate(88, COUNTERCLOCKWISE);
-	autonLiftUp(2600);
-	startTask(autonHold);
-	move(1400, FORWARD);
-	brake(FORWARD);
-
-	// Rotates to face edges
-	rotate(88, CLOCKWISE);
-	stopTask(autonHold);
-	autonLiftDown(1600);
-	startTask(openClaw);
-	delay(400);
-	while (!isOpen()) delay(20);
-	stopTask(openClaw);
-	moveClaw(0, CLOSED);
-	move(800, FORWARD);
-	brake(FORWARD);
-
-
-	// Pick up the cube
+void cubeScore1() {
+	///* dump cube */
 	startTask(velocityCloseClaw);
-	while (isOpen()) delay(20);
-	delay(150);
-	move(200, BACKWARD);
-	autonLiftUp(2600);
+	autonLiftUp(1500);
+
+	startTask(autonHold);
+	k = 4;
+	rotate(85, COUNTERCLOCKWISE);
+	k = 5;
+	move(1300, BACKWARD);
+	stopTask(autonHold);
+	startTask(liftLaunch); // starts autonHold after usage
+	move(500, BACKWARD);
+	stopTask(velocityCloseClaw);
+	startTask(openClaw);
+	// fence ram
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(0, 0);
+
+	autonLiftDown(2500);
+
+	/* wing push */
+	move(500, FORWARD);
+	wait1Msec(100);
+	move(500, BACKWARD);
+
+	/* star grab */
+	stopTask(autonHold);
+	autonLiftDown(400);
+	move(2700, FORWARD);
+	brake(FORWARD);
+	startTask(velocityCloseClaw);
+	wait1Msec(500);
+	autonLiftUp(1500);
 	startTask(autonHold);
 
-	// Move toward fence
-	move(850, BACKWARD);
-	stopTask(autonHold);
-	startTask(launch);
-	move(150, BACKWARD);
-	brake(BACKWARD);
+	/* star dump */
+	move(2000, BACKWARD);
+	startTask(liftLaunch); // starts autonHold task
+	move(600, BACKWARD);
+	stopTask(velocityCloseClaw);
+	startTask(openClaw);
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(0, 0);
 
-	// dump
-	reset();
+	// move forward
+	move(300, FORWARD);
+	stopTask(autonHold);
+}
+
+void support() {
+	/* star grab */
+	startTask(deploy);
+	wait1Msec(500); // tune for deploy
+	move(1000, FORWARD);
+	brake(FORWARD);
+	stopTask(deploy);
+	startTask(velocityCloseClaw);
+	wait1Msec(500);
+
+	/* return to center tile */
+	autonLiftUp(1800);
+	startTask(autonHold);
+	move(1000, BACKWARD);
+	brake(BACKWARD);
+	rotate(90, COUNTERCLOCKWISE);
+
+	/* dump */
+	move(500, BACKWARD);
+	stopTask(autonHold);
+	startTask(liftLaunch);
+	move(500, BACKWARD);
+	stopTask(velocityCloseClaw);
+	startTask(openClaw);
+
+	moveDrive(-127, -127);
+	wait1Msec(300);
+	moveDrive(127, 127);
+
+	/* wing push */
+	move(200, FORWARD);
+	brake(FORWARD);
+	wait1Msec(200);
+	move(200, BACKWARD);
 }
