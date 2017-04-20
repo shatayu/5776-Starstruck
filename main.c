@@ -1,8 +1,8 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
 #pragma config(Sensor, in1,    ,               sensorPotentiometer)
 #pragma config(Sensor, in4,    ClawPot,        sensorPotentiometer)
-#pragma config(Sensor, in5,    Selector,       sensorPotentiometer)
-#pragma config(Sensor, in6,    LiftPot,        sensorPotentiometer)
+#pragma config(Sensor, in5,    LiftPot,        sensorPotentiometer)
+#pragma config(Sensor, in6,    Selector,       sensorPotentiometer)
 #pragma config(Sensor, in7,    Gyro,           sensorGyro)
 #pragma config(Sensor, dgtl1,  RQuad,          sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  LQuad,          sensorQuadEncoder)
@@ -44,7 +44,7 @@ void pre_auton() {
 
 
 task autonomous() {
-	rotate(90, CLOCKWISE):
+	basicAuton();
 }
 
 
@@ -75,7 +75,9 @@ task usercontrol() {
 		}
 
 
-		if (vexRT[Btn7D}) {zeroEncoders()};
+		if (vexRT[Btn7D]) {
+			zeroEncoders();
+		}
 		wait1Msec(20);
 	}
 }

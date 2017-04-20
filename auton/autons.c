@@ -1,3 +1,20 @@
+void basicAuton () {
+	move(2000, BACKWARD);
+	startTask(liftLaunch); // starts autonHold upon completion
+	move(3000, BACKWARD);
+	startTask(openClaw);
+	move(500, BACKWARD);
+
+	moveDrive(-127, -127);
+	wait1Msec(500);
+	moveDrive(-127, -127);
+	brake(BACKWARD);
+
+	wait1Msec(500);
+	moveDrive(1000, FORWARD);
+	brake(FORWARD);
+}
+
 void cubeScore (int direction) {
 	/* grab cube */
 	move(2000, FORWARD);
