@@ -44,13 +44,14 @@ void pre_auton() {
 
 
 task autonomous() {
-	basicAuton();
+	cubeScore(1);
+	stars();
+	//stars();
 }
 
 
 task usercontrol() {
-	startTask(lift);
-
+	startTask(lift); //in PID.c
 	bool closeToggle;
 	while (true) {
 		// arcade drive
@@ -63,7 +64,7 @@ task usercontrol() {
 			closeToggle = false;
 
 		if (closeToggle) {
-			moveClaw(30, CLOSED);
+			moveClaw(20, CLOSED);
 		} else {
 			if (vexRT[Btn5U]) {
 				moveClaw(127, OPEN);
@@ -77,6 +78,11 @@ task usercontrol() {
 
 		if (vexRT[Btn7D]) {
 			zeroEncoders();
+		}
+
+		if (vexRT[Btn7R]) {
+			closeToggle = false;
+			PIDToggle = false;
 		}
 		wait1Msec(20);
 	}

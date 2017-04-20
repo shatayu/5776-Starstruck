@@ -21,12 +21,14 @@ void calcPID(PID tPID) {
 
 bool buff = false;
 PID liftHoldPID;
+bool PIDToggle = true;
 
 /*
 manages lift control, activates PID when lift is not moving up or down and PID is on
 */
+
+
 task lift() {
-	bool PIDToggle = false;
 
 	liftHoldPID.kp = 0.4;
 	liftHoldPID.ki = 0.1;
@@ -46,8 +48,11 @@ task lift() {
 			moveLift(127);
 			buff = true;
 		} else if (vexRT[Btn6D]) {
-			moveLift(-127);
+			int speed = -127;
+			if(SensorValue[LiftPot] < 1500) speed = -90;//slow down
+			moveLift(speed);
 			buff = true;
+
 		} else {
 			if (buff) {
 				liftHoldPID.set = SensorValue[LiftPot];
@@ -55,11 +60,11 @@ task lift() {
 
 			buff = false;
 
-			if(SensorValue[LiftPot] > 900 && PIDToggle){
+			if(SensorValue[LiftPot] > 1100 && PIDToggle){
 				liftHoldPID.cur = SensorValue[LiftPot];
 				calcPID(liftHoldPID);
 			}else{
-				liftHoldPID.power = 0;
+				liftHoldPID.power = -10;
 				liftHoldPID.integral = 0;
 			}
 			moveLift(liftHoldPID.power);
@@ -87,8 +92,8 @@ task autonHold() {
 		if(SensorValue[LiftPot] > 900){
 			holdPID.cur = SensorValue[LiftPot];
 			calcPID(holdPID);
-			} else {
-			holdPID.power = 0;
+		} else {
+			holdPID.power = -10;
 			holdPID.integral = 0;
 		}
 		moveLift(holdPID.power);

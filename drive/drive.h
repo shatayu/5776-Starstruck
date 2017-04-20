@@ -1,6 +1,6 @@
 // claw constants
-#define OPEN -1
-#define CLOSED 1
+#define OPEN 1
+#define CLOSED -1
 
 // lift constants
 #define UP 1
