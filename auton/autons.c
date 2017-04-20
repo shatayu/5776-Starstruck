@@ -1,3 +1,12 @@
+void deployworlds() {
+	autonLiftUp(1700);
+	startTask(autonHold);
+	closeClaw(2600, 1500);
+	stopTask(autonHold);
+	autonLiftDown(800);
+
+}
+
 void basicAuton () {
 	move(2000, BACKWARD);
 	startTask(liftLaunch); // starts autonHold upon completion
@@ -17,28 +26,28 @@ void basicAuton () {
 
 void cubeScore (int direction) {
 	/* grab cube */
+	deployworlds();
 	move(2000, FORWARD);
 	brake(FORWARD);
+
 	rotate(87, COUNTERCLOCKWISE * direction);
 
-	move(500, BACKWARD);
-	brake(BACKWARD);
-	move(500, FORWARD);
 	move(3000, FORWARD);
 	brake(FORWARD);
 	// stop deploy
-	closeClaw(3100, 3000);
-	moveClaw(20, CLOSED);
+	closeClaw(3000, 2000);
+	startTask(clawStall);
 	autonLiftUp(1600);
 	startTask(autonHold);
 	rotate(87, COUNTERCLOCKWISE * direction);
 
 	/* dump over fence */
 	// 3000 total distance from cube to fence
-	move(1250, BACKWARD);
+	move(950, BACKWARD);
 	stopTask(autonHold);
 	startTask(liftLaunch); // starts autonHold upon completion
 	move(1000, BACKWARD);
+	stopTask(clawStall);
 	startTask(openClaw);
 	move(550, BACKWARD);
 
@@ -56,14 +65,14 @@ void cubeScore (int direction) {
 void stars() {
 	/* move forward and grab stars */
 	move(5000, FORWARD);
-	closeClaw(3100, 3000);
+	closeClaw(3100, 1500);
+	move(1000, BACKWARD, 70);
+	brake(BACKWARD);
+	move(1000, FORWARD);
 	autonLiftUp(1600);
 	startTask(autonHold);
 
 	/* go back and dump stars */
-	move(1000, BACKWARD, 70);
-	brake(BACKWARD);
-	move(1000, FORWARD);
 	move(1250, BACKWARD);
 	stopTask(autonHold);
 	startTask(liftLaunch); // starts autonHold upon completion
@@ -88,7 +97,7 @@ void hoardHangR() {
 	startTask(liftLaunch); // starts task autonHold
 	//startTask(openClaw);
 	brake(FORWARD);
-	startTask(velocityCloseClaw);
+	//startTask(velocityCloseClaw);
 	wait1Msec(500);
 	resetLift();
 

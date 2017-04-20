@@ -7,33 +7,12 @@ float getVelocity() {
 }
 
 int v;
-task velocityCloseClaw() {
-		////nSchedulePriority = 10;
-		//moveClaw(127, CLOSED);
-		// //while velocity is above stallVelocity close very quickly - once velocity is below it means that claw has closed on objects
-		//float stallVelocity = 10;
-		//while (fabs(getVelocity()) > stallVelocity) {
-		//	//v = getVelocity();
-		//	v = 10;
-		//	moveClaw(127, CLOSED);
-		//	wait1Msec(20);
-		//}
-
-		//// apply small amounts of power to keep objects in claw
-		//int stallTorque = 30;
-		//while (true) {
-		//	if (SensorValue[ClawPot] < 50) {
-		//		moveClaw(0, CLOSED);
-		//	} else {
-		//		moveClaw(stallTorque, CLOSED);
-		//		wait1Msec(20);
-		//	}
-		//}
-		while (true) {
-
-		}
+task clawStall() {
+	while (SensorValue[ClawPot] < 3000) {
+		moveClaw(30, CLOSED);
+	}
+	moveClaw(0, OPEN);
 }
-
 task openClaw() {
 	int openAngle = 2300; // ACTUAL CONSTANT
 	while (SensorValue[ClawPot] > openAngle) {
@@ -46,7 +25,7 @@ task openClaw() {
 
 void openClawF(int sensor, int killTimeMS) {
 	int time = 0;
-	while (time < killTimeMS || SensorValue[ClawPot] < sensor) {
+	while (time < killTimeMS && SensorValue[ClawPot] < sensor) {
 		moveClaw(127, OPEN);
 		wait1Msec(20);
 		time += 20;
@@ -56,7 +35,7 @@ void openClawF(int sensor, int killTimeMS) {
 
 void closeClaw(int sensor, int killTimeMS) {
 	int time = 0;
-	while (time < killTimeMS || SensorValue[ClawPot] < sensor) {
+	while (time < killTimeMS && SensorValue[ClawPot] < sensor) {
 		moveClaw(127, CLOSED);
 		wait1Msec(20);
 		time += 20;

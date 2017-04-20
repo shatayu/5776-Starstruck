@@ -46,13 +46,17 @@ void pre_auton() {
 task autonomous() {
 	cubeScore(1);
 	stars();
-	//stars();
+	stars();
 }
 
 
 task usercontrol() {
 	startTask(lift); //in PID.c
 	bool closeToggle;
+
+	closeToggle = false;
+	PIDToggle = false;
+
 	while (true) {
 		// arcade drive
 		moveDrive(vexRT[Ch3] + vexRT[Ch1], (vexRT[Ch3] - vexRT[Ch1]));

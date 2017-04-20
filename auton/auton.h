@@ -13,7 +13,7 @@ void autonLiftUp (int angle);
 void autonLiftDown (int angle);
 
 float getVelocity();
-task velocityCloseClaw();
+
 task halfOpenClaw();
 task openClaw();
 task liftLaunch();
