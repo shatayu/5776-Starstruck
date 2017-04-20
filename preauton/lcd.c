@@ -92,7 +92,7 @@ task batteryLCD() {
 task autonSelect() {
 	bLCDBacklight = true;
 	while (true) {
-		displayLCDNumber(TOP, 0, SensorValue[LiftPot] * 1000 + SensorValue[ClawPot] * 1000);
+		displayLCDNumber(TOP, 0, SensorValue[LiftPot]);
 		displayLCDNumber(BOTTOM, 0, SensorValue[Gyro]);
 	}
 }
