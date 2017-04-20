@@ -2,30 +2,12 @@
 Calibrates gyroscope in pre-auton. Includes button interrupt in case robot restarts during drive.
 */
 void calibrate() {
-	// remove gyro from port
-	SensorType[in5] = sensorNone;
-
-	wait1Msec(1000);
-	SensorType[in5] = sensorGyro;
-	wait1Msec(2000);
-
-	 /* interruptable wait
-	 for (int i = 0; i < 25; i++) {
-	   if (vexRT[Btn8R])
-	   //  return;
-
-	   wait1Msec(20);
-	 }
-
-	 // re-add gyro to port 2
-	 SensorType[in2] = sensorGyro;
-	 for (int i = 0; i < 100; i++) {
-	   if (vexRT[Btn8R])
-	   //  return;
-
-	   wait1Msec(20);
-	 }*/
-
+ //Completely clear out any previous sensor readings by setting the port to "sensorNone"
+ SensorType[in7] = sensorNone;
+ wait1Msec(1000);
+ //Reconfigure Analog Port 8 as a Gyro sensor and allow time for ROBOTC to calibrate it
+ SensorType[in7] = sensorGyro;
+ wait1Msec(2000);
 }
 
 /*

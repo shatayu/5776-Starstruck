@@ -45,7 +45,7 @@ Made a task to be able to lift for dump while moving.
 */
 task liftLaunch() {
 	while (SensorValue[LiftPot] < 2700) {
-		moveLift(70);
+		moveLift(127);
 		wait1Msec(20);
 	}
 	moveLift(0);
@@ -56,10 +56,10 @@ task liftLaunch() {
 /*
 Brings lift down to neutral position. Made task to bring lift down while moving.
 */
-void reset() {
+void resetLift() {
 	int potHeightDown = 790;
 	while (SensorValue[LiftPot] > potHeightDown) {
-		moveLift(-50);
+		moveLift(-127);
 		wait1Msec(20);
 	}
 	moveLift(0);

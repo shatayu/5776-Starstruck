@@ -4,7 +4,7 @@ Splits auton into numAutons parts, returns values from [0,(numAutons-1)].
 @param numAutons: the number of autons the robot has
 */
 int autonSelector(int numAutons) {
-	return (int) ((SensorValue[Selector])/(4096/(numAutons - 1)));
+	return (int) ((SensorValue[Selector]) * (numAutons)/(4096));
 }
 
 /*
@@ -86,5 +86,13 @@ task batteryLCD() {
 
 		displayLCDString(BOTTOM, 0, line2);
 		wait1Msec(20);
+	}
+}
+
+task autonSelect() {
+	bLCDBacklight = true;
+	while (true) {
+		displayLCDNumber(TOP, 0, SensorValue[LiftPot] * 1000 + SensorValue[ClawPot] * 1000);
+		displayLCDNumber(BOTTOM, 0, SensorValue[Gyro]);
 	}
 }

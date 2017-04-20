@@ -1,116 +1,89 @@
-int k = 0;
-
-void block() {
-	move(900, BACKWARD);
-	startTask(deploy);
-	move(900, BACKWARD);
-	autonLiftUp(2800);
-	startTask(autonHold);
-	move(1200, BACKWARD);
-	wait1Msec(500);
-	move(500, FORWARD);
-}
-
-void cubeScore() {
+void cubeScore (int direction) {
 	/* grab cube */
 	move(2000, FORWARD);
 	brake(FORWARD);
-	rotate(90, COUNTERCLOCKWISE);
-	move(500, BACKWARD);
-	startTask(deploya);
-	k = 2;
-	stopTask(deploya);
-	move(3900, FORWARD);
+	rotate(90, COUNTERCLOCKWISE * direction);
+
+	// deploy
+	move(3000, FORWARD);
 	brake(FORWARD);
-	wait1Msec(300);
-	k = 3;
-	return;
-}
-
-void cubeScore1() {
-	///* dump cube */
+	// stop deploy
 	startTask(velocityCloseClaw);
-	autonLiftUp(1500);
-
+	wait1Msec(400);
+	autonLiftUp(1600);
 	startTask(autonHold);
-	k = 4;
-	rotate(85, COUNTERCLOCKWISE);
-	k = 5;
-	move(1300, BACKWARD);
+	rotate(90, COUNTERCLOCKWISE * direction);
+
+	/* dump over fence */
+	// 3000 total distance from cube to fence
+	move(1250, BACKWARD);
 	stopTask(autonHold);
-	startTask(liftLaunch); // starts autonHold after usage
-	move(500, BACKWARD);
+	startTask(liftLaunch); // starts autonHold upon completion
+	move(1550, BACKWARD);
+
+	moveDrive(-127, -127);
+	wait1Msec(400);
+	moveDrive(0, 0);
+	brake(BACKWARD);
+
 	stopTask(velocityCloseClaw);
 	startTask(openClaw);
-	// fence ram
-	moveDrive(-127, -127);
-	wait1Msec(300);
-	moveDrive(0, 0);
 
-	autonLiftDown(2500);
-
-	/* wing push */
-	move(500, FORWARD);
-	wait1Msec(100);
-	move(500, BACKWARD);
-
-	/* star grab */
+	/* bring down */
 	stopTask(autonHold);
-	autonLiftDown(400);
-	move(2700, FORWARD);
-	brake(FORWARD);
+	stopTask(liftLaunch);
+	autonLiftDown(1000);
+}
+
+void stars() {
+	/* move forward and grab stars */
+	move(5000, FORWARD);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
-	autonLiftUp(1500);
+	autonLiftUp(1600);
 	startTask(autonHold);
 
-	/* star dump */
+	/* go back and dump stars */
+	move(1500, BACKWARD, 70);
 	move(2000, BACKWARD);
-	startTask(liftLaunch); // starts autonHold task
-	move(600, BACKWARD);
+	stopTask(autonHold);
+	startTask(liftLaunch); // starts autonHold upon completion
+	move(1300, BACKWARD);
+
+	moveDrive(-127, -127);
+	wait1Msec(400);
+	moveDrive(0, 0);
+	brake(BACKWARD);
+
 	stopTask(velocityCloseClaw);
 	startTask(openClaw);
-	moveDrive(-127, -127);
-	wait1Msec(300);
-	moveDrive(0, 0);
 
-	// move forward
-	move(300, FORWARD);
-	stopTask(autonHold);
-}
-
-void support() {
-	/* star grab */
-	startTask(deploy);
-	wait1Msec(500); // tune for deploy
+	/* move forward */
 	move(1000, FORWARD);
 	brake(FORWARD);
-	stopTask(deploy);
+	stopTask(liftLaunch);
+	stopTask(autonHold);
+	autonLiftDown(1600);
+}
+
+void hoardHangR() {
+
+	move(2000, FORWARD);
+	startTask(liftLaunch); // starts task autonHold
+	startTask(openClaw);
+	brake(FORWARD);
 	startTask(velocityCloseClaw);
 	wait1Msec(500);
+	resetLift();
 
-	/* return to center tile */
-	autonLiftUp(1800);
-	startTask(autonHold);
-	move(1000, BACKWARD);
-	brake(BACKWARD);
-	rotate(90, COUNTERCLOCKWISE);
-
-	/* dump */
-	move(500, BACKWARD);
-	stopTask(autonHold);
-	startTask(liftLaunch);
-	move(500, BACKWARD);
-	stopTask(velocityCloseClaw);
-	startTask(openClaw);
+	// go back and hang
+	move(800, BACKWARD);
+	rotate(45, COUNTERCLOCKWISE);
+	move(200, BACKWARD);
 
 	moveDrive(-127, -127);
-	wait1Msec(300);
-	moveDrive(127, 127);
+	wait1Msec(500);
+	moveDrive(0, 0);
 
-	/* wing push */
-	move(200, FORWARD);
-	brake(FORWARD);
-	wait1Msec(200);
-	move(200, BACKWARD);
+	//hang();
 }
