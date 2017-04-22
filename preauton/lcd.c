@@ -89,10 +89,21 @@ task batteryLCD() {
 	}
 }
 
+//int numAutons = 5;
+int auton;
 task autonSelect() {
-	bLCDBacklight = true;
 	while (true) {
-		displayLCDNumber(TOP, 0, SensorValue[LiftPot]);
-		displayLCDNumber(BOTTOM, 0, SensorValue[Gyro]);
+		auton = autonSelector(NUMAUTONS);
+		if (auton == 0) {
+			displayLCDCenteredString(TOP, "LEFT Cube");
+		} else if (auton == 1) {
+			displayLCDCenteredString(TOP, "RIGHT Cube");
+		} else if (auton == 2) {
+			displayLCDCenteredString(TOP, "LEFT supportL");
+		} else if (auton == 3) {
+			displayLCDCenteredString(TOP, "RIGHT supportL");
+		} else if (auton == 4) {
+			displayLCDCenteredString(TOP, "ONLY DEPLOY");
+		}
 	}
 }

@@ -3,10 +3,13 @@
 #define BACKWARD -1
 #define CLOCKWISE 1
 #define COUNTERCLOCKWISE -1
+#define RIGHT 1
+#define LEFT -1
 
 void calibrate();
 void zeroEncoders();
 void move (int ticks, int direction, int speed = 100);
+void moveKill (int ticks, int direction, int killTime, int speed = 100);
 void rotate (float degrees, int direction, int speed = 80);
 void brake (int direction);
 void autonLiftUp (int angle);

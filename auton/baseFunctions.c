@@ -35,13 +35,17 @@ void move (int ticks, int direction, int speed) {
 	int left = abs(SensorValue[LQuad]);
 	int right = abs(SensorValue[RQuad]);
 
+	int start = nPgmTime;
+
 	moveDrive(direction * speed, direction * speed);
 
 	while ((left < 0.7 * ticks) && (right < 0.7 * ticks)) {
 		left = abs(SensorValue[LQuad]);
 		right = abs(SensorValue[RQuad]);
 
-		wait1Msec(10);
+		if(nPgmTime - start > 5000) break;
+
+		wait1Msec(20);
 	}
 
 	speed /= 3; // first deceleration
@@ -50,7 +54,41 @@ void move (int ticks, int direction, int speed) {
 		left = abs(SensorValue[LQuad]);
 		right = abs(SensorValue[RQuad]);
 
-		wait1Msec(10);
+		wait1Msec(20);
+	}
+
+	moveDrive(0, 0);
+}
+
+
+void moveKill (int ticks, int direction, int killTime, int speed) {
+	int BRAKE_SPEED = 50;
+	int BRAKE_TIME = 40;
+	int timeElapsed = 0;
+	zeroEncoders();
+
+	int left = abs(SensorValue[LQuad]);
+	int right = abs(SensorValue[RQuad]);
+	int time = 0;
+
+	moveDrive(direction * speed, direction * speed);
+
+	while ((left < 0.7 * ticks) && (right < 0.7 * ticks) && time < killTime) {
+		left = abs(SensorValue[LQuad]);
+		right = abs(SensorValue[RQuad]);
+
+		wait1Msec(20);
+		time += 20;
+	}
+
+	speed /= 3; // first deceleration
+
+	while ((left < ticks) && (right < ticks) && time < killTime) {
+		left = abs(SensorValue[LQuad]);
+		right = abs(SensorValue[RQuad]);
+
+		wait1Msec(20);
+		time += 20;
 	}
 
 	moveDrive(0, 0);

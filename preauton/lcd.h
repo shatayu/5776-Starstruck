@@ -1,6 +1,5 @@
 #define TOP 0
 #define BOTTOM 1
-#define NUMAUTONS 3
 
 int autonSelector(int numAutons);
 int writeSecondLCD(int line, string s);
